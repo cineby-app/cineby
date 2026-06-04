@@ -24,7 +24,7 @@ const dmSans = DM_Sans({
 
 // Global Viewport Settings Configuration
 export const viewport: Viewport = {
-  themeColor: "#05050A",
+  themeColor: "#b50000",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,

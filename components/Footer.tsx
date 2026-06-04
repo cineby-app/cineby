@@ -81,10 +81,11 @@ export function Footer() {
 
           {/* Right: Legal Links & Support */}
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 order-1 md:order-2">
-            <a href="mailto:support@cineby.app" className="hover:text-white transition-colors">Support</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Cookies</a>
+            <a href="/about" className="hover:text-white transition-colors">About US</a>
+            <a href="/contact" className="hover:text-white transition-colors">Contact</a>
+            <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
+            <a href="/terms" className="hover:text-white transition-colors">Terms</a>
+            <a href="/cookies" className="hover:text-white transition-colors">Cookies</a>
           </div>
 
         </div>

@@ -238,7 +238,7 @@ export default function Home() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-white uppercase drop-shadow-2xl mb-4 md:mb-6">
               Built For Cinema <br /> 
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b50000] to-[#b50000]">
-                Lovers
+                Lovers.
               </span>
             </h1>
             <p className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl font-mono uppercase tracking-[0.2em] max-w-2xl mx-auto mb-8 md:mb-12 px-4">
