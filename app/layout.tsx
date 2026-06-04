@@ -3,6 +3,8 @@ import { Inter, Montserrat, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+// 1. Import Next.js optimized Script component
+import Script from "next/script"; 
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,8 +41,9 @@ export const metadata: Metadata = {
     default: "Cineby | Cinema, Series, Music & Entertainment",
     template: "%s | Cineby",
   },
-  description: "Discover the best movies, TV series, music, and entertainment content. Your ultimate destination for cinematic discovery and cultural exploration.",
+  description: "Discover the best movies, TV series, music, and entertainment content on Cineby. Your ultimate destination for cinematic discovery and cultural exploration.",
   keywords: [
+    "cineby",
     "movies",
     "cinema",
     "series",
@@ -227,6 +230,21 @@ export default function RootLayout({
         <meta name="msapplication-config" content="/img/favicons/browserconfig.xml" />
       </head>
       <body className="font-sans antialiased bg-[#05050A] text-white">
+        
+        {/* 2. OPTIMIZED GOOGLE ANALYTICS INTEGRATION USING next/script */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-T9664BYK5Y"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-T9664BYK5Y');
+          `}
+        </Script>
+
         {/* Google Structured Schemas injection blocks */}
         <script
           type="application/ld+json"
