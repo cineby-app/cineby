@@ -1,25 +1,23 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { getGenres } from '@/lib/tmdb';
 
 interface GenrePageProps {
   params: Promise<{ genreId: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 // Generate dynamic metadata for each genre page
-export async function generateMetadata({ params, searchParams }: GenrePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: GenrePageProps): Promise<Metadata> {
   const { genreId } = await params;
-  const resolvedSearchParams = await searchParams;
-  const name = resolvedSearchParams?.name as string | undefined;
   
-  // Get genre name from URL param or fetch from API
-  let genreName = name;
+  // Get genre name from API
+  let genreName = 'Movies';
   
-  if (!genreName) {
+  try {
     const genres = await getGenres();
     const genre = genres.find(g => g.id.toString() === genreId);
     genreName = genre?.name || 'Movies';
+  } catch (error) {
+    genreName = 'Movies';
   }
   
   const title = `${genreName} Movies | Cineby`;
@@ -63,6 +61,7 @@ export async function generateMetadata({ params, searchParams }: GenrePageProps)
   };
 }
 
-export default async function GenreLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+// Simple layout that just renders children
+export default function GenreLayout({ children }: { children: React.ReactNode }) {
+  return children;
 }

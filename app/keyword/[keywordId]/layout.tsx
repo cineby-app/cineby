@@ -3,7 +3,6 @@ import { fetchKeywordDetails } from '@/lib/tmdb';
 
 interface KeywordPageProps {
   params: Promise<{ keywordId: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 function getIdFromSlug(slug: string): number | null {
@@ -22,20 +21,15 @@ function getNameFromSlug(slug: string): string {
 }
 
 // Generate dynamic metadata for each keyword page
-export async function generateMetadata({ params, searchParams }: KeywordPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: KeywordPageProps): Promise<Metadata> {
   const { keywordId } = await params;
-  const resolvedSearchParams = await searchParams;
   
   // Extract ID from slug (e.g., "action-123" → 123)
   const id = getIdFromSlug(keywordId);
   
   let keywordName = '';
   
-  // Try to get keyword name from URL query param first
-  const nameParam = resolvedSearchParams?.name as string | undefined;
-  if (nameParam) {
-    keywordName = nameParam;
-  } else if (id) {
+  if (id) {
     // Fetch keyword details from API
     try {
       const keyword = await fetchKeywordDetails(id.toString());

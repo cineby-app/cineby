@@ -12,12 +12,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!person) return {};
 
   return {
-    title: `${person.name} - Writing | Cineby`,
-    description: person.biography?.substring(0, 160) || `Sound and music composed by ${person.name}`,
+    title: `${person.name} - Writer | Cineby`,
+    description: person.biography?.substring(0, 160) || `Written by ${person.name} – movies, scripts, and biography.`,
   };
 }
 
-export default async function SoundPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function WriterPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const id = slug.split("-").pop();
   if (!id) return notFound();
@@ -26,7 +26,8 @@ export default async function SoundPage({ params }: { params: Promise<{ slug: st
   if (!person) return notFound();
 
   const department = person.known_for_department?.toLowerCase();
-  if (department !== "sound") return notFound();
+  if (department !== "writing") return notFound();
 
-  return <PersonDetail personId={id} />;
+  // Render the component without any props - it will get the ID from the URL using useParams()
+  return <PersonDetail />;
 }

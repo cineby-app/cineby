@@ -28,5 +28,6 @@ export default async function ProducerPage({ params }: { params: Promise<{ slug:
   const department = person.known_for_department?.toLowerCase();
   if (department !== "production") return notFound();
 
-  return <PersonDetail personId={id} />;
+  // Render the component without any props - it will get the ID from the URL using useParams()
+  return <PersonDetail />;
 }

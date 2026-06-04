@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!person) return {};
 
   return {
-    title: `${person.name} - Director | WhatToWatch`,
+    title: `${person.name} - Director | Cineby`,
     description: person.biography?.substring(0, 160) || `Directed by ${person.name} – movies and biography.`,
   };
 }
@@ -28,5 +28,6 @@ export default async function DirectorPage({ params }: { params: Promise<{ slug:
   const department = person.known_for_department?.toLowerCase();
   if (department !== "directing") return notFound();
 
-  return <PersonDetail personId={id} />;
+  // Render the component without any props - it will get the ID from the URL using useParams()
+  return <PersonDetail />;
 }

@@ -299,19 +299,24 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
   useEffect(() => {
     if (!movieSlug) return;
     const idStr = movieSlug.split("-").pop();
-    if (!idStr) return;
+    
+    // FIX: Add proper type guard
+    if (!idStr || idStr === undefined) {
+      notFound();
+      return;
+    }
 
     async function fetchData() {
       setLoading(true);
       const [movieData, castData, crewData, similar, recommendations, videosData, keywordsData, imagesData] = await Promise.all([
-        fetchMovieDetails(idStr),
-        fetchMovieCredits(idStr),
-        fetchMovieCrew(idStr),
-        fetchMovieSimilar(idStr),
-        fetchMovieRecommendations(idStr),
-        fetchMovieVideos(idStr),
-        fetchMovieKeywords(idStr),
-        fetchMovieImages(idStr)
+        fetchMovieDetails(idStr as string),
+        fetchMovieCredits(idStr as string),
+        fetchMovieCrew(idStr as string),
+        fetchMovieSimilar(idStr as string),
+        fetchMovieRecommendations(idStr as string),
+        fetchMovieVideos(idStr as string),
+        fetchMovieKeywords(idStr as string),
+        fetchMovieImages(idStr as string)
       ]);
       setMovie(movieData);
       setCast(castData);

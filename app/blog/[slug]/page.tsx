@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!article) {
     return {
-      title: 'Article Not Found | Cineby',
+      title: 'Article Not Found',
       description: 'The requested article could not be found.',
       robots: { index: false, follow: false },
     };

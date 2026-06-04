@@ -28,5 +28,6 @@ export default async function SoundPage({ params }: { params: Promise<{ slug: st
   const department = person.known_for_department?.toLowerCase();
   if (department !== "sound") return notFound();
 
-  return <PersonDetail personId={id} />;
+  // Render the component without any props - it will get the ID from the URL using useParams()
+  return <PersonDetail />;
 }

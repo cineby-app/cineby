@@ -265,7 +265,7 @@ export default function SearchPage() {
     }
   };
 
-  const getTopGenres = (movie: any) => {
+  const getTopGenres = (movie: any): string[] => {
     if (!movie.genre_ids || movie.genre_ids.length === 0) return [];
     return movie.genre_ids.slice(0, 2).map((id: number) => TMDB_GENRES[id]).filter(Boolean);
   };
@@ -536,11 +536,11 @@ export default function SearchPage() {
                           {year || "N/A"}
                         </span>
                         <h3 className="text-white font-bold text-xs md:text-sm leading-tight mb-2 line-clamp-2">
-                          {decodedQuery && highlightText(movie.title, decodedQuery)}
+                          {decodedQuery ? highlightText(movie.title, decodedQuery) : movie.title}
                         </h3>
                         {topGenres.length > 0 && (
                           <div className="flex flex-wrap gap-1">
-                            {topGenres.map((genreName, gIdx) => (
+                            {topGenres.map((genreName: string, gIdx: number) => (
                               <span 
                                 key={gIdx} 
                                 style={{ 

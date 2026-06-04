@@ -95,7 +95,7 @@ export function PersonDetail() {
   const [activeTab, setActiveTab] = useState<"bio" | "films">("bio");
   const [isBioExpanded, setIsBioExpanded] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     if (!slug) return;
     const id = slug.split("-").pop();
     if (!id) return;
@@ -103,8 +103,8 @@ export function PersonDetail() {
     async function loadData() {
       setLoading(true);
       const [personData, moviesData] = await Promise.all([
-        fetchPersonDetails(id),
-        fetchPersonMovies(id),
+        fetchPersonDetails(id as string),
+        fetchPersonMovies(id as string),
       ]);
       setPerson(personData);
       setMovies(moviesData);
@@ -252,7 +252,7 @@ export function PersonDetail() {
                 {/* Personal Info - Modern Responsive Grid */}
                 <div>
                   <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2 mb-4">
-                    <IconStar className="w-4 h-4" /> Personal Details
+                    <IconStar /> Personal Details
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* Birthday + Age */}

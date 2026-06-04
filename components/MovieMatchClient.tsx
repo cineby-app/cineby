@@ -505,8 +505,8 @@ export function MovieMatchClient() {
         skippedMovieIds: skippedAndWatchlisted,
       });
 
-      setMovieQueue(topMovies);
-      
+      setMovieQueue(topMovies as Movie[]);
+   
       if (topMovies.length === 0 && allQuestions.length === (5 + deepQuestionsAsked.size)) {
         setStage('completed');
       } else if (topMovies.length > 0) {

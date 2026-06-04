@@ -90,14 +90,16 @@ export default function KeywordPage({
     loadParams();
   }, [params]);
 
-  // Read clean string translations for titles queries
+  // Read clean string translations for titles queries - FIXED
   useEffect(() => {
     if (!keywordId) return;
     async function loadKeyword() {
-      const id = getIdFromSlug(keywordId);
+      // Fix: Ensure keywordId is a string before passing to getIdFromSlug
+      const keywordIdString = keywordId as string;
+      const id = getIdFromSlug(keywordIdString);
       if (!id) return;
       const keyword = await fetchKeywordDetails(id.toString());
-      setKeywordName(keyword?.name || getNameFromSlug(keywordId));
+      setKeywordName(keyword?.name || getNameFromSlug(keywordIdString));
     }
     loadKeyword();
   }, [keywordId]);
@@ -105,7 +107,7 @@ export default function KeywordPage({
   // Core API loader - Appends subsequent data chunks to master pool continuously
   const loadGlobalMoviePool = useCallback(async (pageNum: number, clearPrevious: boolean = false) => {
     if (!keywordId || !keywordName) return;
-    const cleanId = getIdFromSlug(keywordId);
+    const cleanId = getIdFromSlug(keywordId as string);
     if (!cleanId) return;
 
     try {
