@@ -54,7 +54,7 @@ export function InfiniteMovieRows({ movies }: { movies: Movie[] }) {
   }
 
   return (
-    <div className="w-full relative z-20 pb-10 overflow-hidden min-h-screen flex flex-col justify-center gap-6">
+    <div className="w-full relative z-20 pt-5 pb-10 overflow-hidden min-h-screen flex flex-col justify-center gap-6">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#05050A] to-transparent z-30" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#05050A] to-transparent z-30" />

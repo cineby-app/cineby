@@ -79,7 +79,7 @@ export function ActionButtons({ movie }: { movie: Movie }) {
           ${
             isWatchlisted
               ? "bg-[#1F2937] text-white border border-[#374151]"
-              : "bg-[#DC2626] text-white hover:bg-[#991B1B] border border-[#DC2626]"
+              : "bg-white text-black hover:bg-red-200 border border-[#DC2626]"
           }`}
       >
         <BookmarkPlus className="w-5 h-5" />

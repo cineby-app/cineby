@@ -73,7 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       
       // Open Graph
       openGraph: {
-        title: `${movie.title} (${releaseYear}) - Movie Ratings & Reviews | Cineby`,
+        title: `Watch ${movie.title} (${releaseYear}) - Movie Ratings & Reviews | Cineby`,
         description: movie.overview?.slice(0, 160) || `Watch ${movie.title} trailer, check ratings, and read reviews.`,
         url: canonicalUrl,
         siteName: "Cineby",

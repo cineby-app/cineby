@@ -17,6 +17,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActionButtons } from "@/components/ActionButtons";
 import { useState, useEffect } from "react";
+import { ContentLocker } from "@/components/ContentLocker";
+
 
 
 // Helper: slugify for actor/director links
@@ -494,9 +496,10 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
                   </Link>
                 ))}
               </div>
+              <ContentLocker movieId={movie.id} movieTitle={movie.title} backdrop={movie.backdrop_path} />
               <div className="flex flex-wrap items-center gap-4 pt-4">
                 {trailerKey && (
-                  <button onClick={() => setTrailerOpen(true)} className="flex items-center gap-2 px-6 py-3 rounded-full font-bold uppercase tracking-wider text-sm transition-all shadow-xl bg-[#BE185D] text-white hover:bg-[#9D174D] border border-[#BE185D] group">
+                  <button onClick={() => setTrailerOpen(true)} className="flex items-center gap-2 px-6 py-3 rounded-full font-bold uppercase tracking-wider text-sm transition-all shadow-xl bg-[#750000] text-white hover:bg-[#470000] border border-white group">
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z" />
                     </svg>
