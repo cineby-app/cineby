@@ -78,8 +78,8 @@ export function ActionButtons({ movie }: { movie: Movie }) {
         className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold uppercase tracking-wider text-sm transition-all shadow-xl
           ${
             isWatchlisted
-              ? "bg-[#1F2937] text-white border border-[#374151]"
-              : "bg-white text-black hover:bg-red-200 border border-[#DC2626]"
+              ? "bg-white text-black border border-[#374151]"
+              : "bg-[#1F2937] text-white hover:bg-red-200 border border-white"
           }`}
       >
         <BookmarkPlus className="w-5 h-5" />
