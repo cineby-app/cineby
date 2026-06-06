@@ -417,7 +417,7 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
   return (
     <main className="min-h-screen bg-black text-white selection:bg-[#E50914] selection:text-white">
       {/* Hero Backdrop */}
-      <div className="relative w-full h-[70vh] md:h-[80vh] min-h-[550px] overflow-hidden">
+      <div className="absolute bottom-0 left-0 w-full px-4 sm:px-6 md:px-16 lg:px-24 pb-6 sm:pb-8 md:pb-12 z-10">
         <div className="absolute inset-0 z-0">
           {movie.backdrop_path ? (
             <>
