@@ -75,7 +75,7 @@ export function Footer() {
             <span>© {currentYear} Cineby. All rights reserved.</span>
             <span className="hidden sm:inline text-gray-700">|</span>
             <span className="hidden sm:flex items-center gap-1 text-[10px] text-gray-600 uppercase tracking-wider">
-              Made with <Heart className="w-2.5 h-2.5 text-[#b50000] fill-[#b50000]/20" /> for cinema lovers
+              Made with <Heart className="w-2.5 h-2.5 text-[#b50000] fill-[#b50000]/20" /> for cinema lovers - frnjv9-4Zu5
             </span>
           </div>
 
