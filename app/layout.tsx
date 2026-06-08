@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 // 1. Import Next.js optimized Script component
 import Script from "next/script"; 
 
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -262,7 +263,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        
         <Navbar />
         
         <main id="main-content" className="min-h-screen">

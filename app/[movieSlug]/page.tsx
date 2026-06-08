@@ -18,6 +18,40 @@ import { notFound } from "next/navigation";
 import { ActionButtons } from "@/components/ActionButtons";
 import { useState, useEffect } from "react";
 import { ContentLocker } from "@/components/ContentLocker";
+import { AdsterraAd } from "@/components/AdsterraAd";
+
+const AD_KEY_300x250 = '8162f7b8c34974f34a974b6e7ecfc56c';
+
+// Responsive Ad Component
+function ResponsiveAd() {
+  return (
+    <>
+      {/* Mobile: Bottom of page */}
+      <div className="block lg:hidden w-full my-8 py-6">
+        <div className="flex justify-center">
+          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-3">
+            <AdsterraAd adKey={AD_KEY_300x250} width={300} height={250} />
+          </div>
+        </div>
+      </div>
+      
+      {/* Desktop: Under Keywords section (will be placed in sidebar) */}
+      {/* This will be rendered in the sidebar position */}
+    </>
+  );
+}
+
+// Desktop Ad Component (to be placed in sidebar)
+function DesktopSidebarAd() {
+  return (
+    <div className="hidden lg:block w-full mt-6">
+      <div className="bg-gradient-to-br from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-3">
+        <AdsterraAd adKey={AD_KEY_300x250} width={300} height={250} />
+      </div>
+    </div>
+  );
+}
+
 
 // Helper: slugify for actor/director links
 function slugify(name: string, id: number): string {
@@ -412,104 +446,111 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-[#E50914] selection:text-white">
-      {/* Hero Backdrop */}
-      <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] min-h-[400px] sm:min-h-[450px] md:min-h-[550px] overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          {movie.backdrop_path ? (
-            <>
-              <Image
-                src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                alt={movie.title}
-                fill
-                className="object-cover scale-105 cursor-pointer"
-                priority
-                referrerPolicy="no-referrer"
-                onClick={() => handleImageClick(0)}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-transparent to-transparent" />
-            </>
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-black" />
-          )}
+{/* Hero Backdrop */}
+<div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] min-h-[560px] sm:min-h-[450px] md:min-h-[550px] overflow-hidden">
+  <div className="absolute inset-0 z-0">
+    {movie.backdrop_path ? (
+      <>
+        <Image
+          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+          alt={movie.title}
+          fill
+          className="object-cover scale-105 cursor-pointer"
+          priority
+          referrerPolicy="no-referrer"
+          onClick={() => handleImageClick(0)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-transparent to-transparent" />
+      </>
+    ) : (
+      <div className="w-full h-full bg-gradient-to-br from-[#1a1a2e] to-black" />
+    )}
+  </div>
+
+  <div className="absolute inset-0 z-0 pointer-events-none">
+    <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-[#E50914]/20 rounded-full blur-3xl animate-pulse" />
+    <div className="absolute bottom-1/4 right-1/4 w-40 h-40 sm:w-56 sm:h-56 md:w-80 md:h-80 bg-[#E50914]/10 rounded-full blur-3xl animate-pulse delay-1000" />
+  </div>
+
+  <div className="absolute bottom-0 left-0 w-full px-4 sm:px-6 md:px-16 lg:px-24 pb-8 sm:pb-8 md:pb-12 z-10">
+    <div className="flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-10 items-start md:items-end max-w-7xl mx-auto">
+      <div className="hidden sm:block md:block group relative cursor-pointer shrink-0" onClick={() => handleImageClick(0)}>
+        <div className="w-32 sm:w-40 md:w-56 lg:w-64 aspect-[2/3] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_0_40px_rgba(229,9,20,0.4)]">
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            fill
+            className="object-cover"
+            referrerPolicy="no-referrer"
+            priority
+          />
         </div>
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-[#E50914]/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-40 h-40 sm:w-56 sm:h-56 md:w-80 md:h-80 bg-[#E50914]/10 rounded-full blur-3xl animate-pulse delay-1000" />
-        </div>
-        <div className="absolute bottom-0 left-0 w-full px-4 sm:px-6 md:px-16 lg:px-24 pb-6 sm:pb-8 md:pb-12 z-10">
-          <div className="flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-10 items-start md:items-end max-w-7xl mx-auto">
-            <div className="hidden sm:block md:block group relative cursor-pointer shrink-0" onClick={() => handleImageClick(0)}>
-              <div className="w-32 sm:w-40 md:w-56 lg:w-64 aspect-[2/3] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_0_40px_rgba(229,9,20,0.4)]">
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  fill
-                  className="object-cover"
-                  referrerPolicy="no-referrer"
-                  priority
-                />
-              </div>
-              <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 bg-black/90 backdrop-blur-md rounded-full px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 border border-[#E50914]/50 shadow-lg">
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#E50914] fill-current" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                  </svg>
-                  <span className="text-white font-bold text-sm sm:text-base md:text-lg">{movie.vote_average.toFixed(1)}</span>
-                  <span className="text-gray-400 text-[10px] sm:text-xs">/10</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 space-y-3 sm:space-y-4 md:space-y-5 pb-2 sm:pb-4">
-              <div className="text-xs sm:text-sm text-gray-400">
-                <Link href="/" className="hover:text-[#E50914] transition">Home</Link>
-                <span className="mx-1 sm:mx-2">/</span>
-                <Link href="/finder" className="hover:text-[#E50914] transition">Movies</Link>
-                <span className="mx-1 sm:mx-2">/</span>
-                <span className="text-[#E50914] text-xs sm:text-sm line-clamp-1">{movie.title}</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter leading-[1.1] bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent line-clamp-2">
-                {movie.title}
-              </h1>
-              {movie.original_title && movie.original_title !== movie.title && (
-                <p className="text-gray-400 text-xs sm:text-sm md:text-base font-light italic line-clamp-1">
-                  {movie.original_title} {movie.original_language && `(${movie.original_language.toUpperCase()})`}
-                </p>
-              )}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-                <span className="text-[#E50914] font-mono font-bold">{movie.release_date?.split("-")[0]}</span>
-                <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-600 rounded-full" />
-                <span className="text-gray-300">{movie.runtime ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m` : 'N/A'}</span>
-                <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-600 rounded-full" />
-                <span className="text-gray-300 text-xs sm:text-sm line-clamp-1">{movie.status}</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {movie.genres?.slice(0, 4).map((g: any) => (
-                  <Link key={g.id} href={`/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
-                    className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-[#E50914] hover:border-[#E50914] transition-all duration-300 hover:scale-105">
-                    {g.name}
-                  </Link>
-                ))}
-              </div>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2 sm:pt-4">
-                <ContentLocker movieId={movie.id} movieTitle={movie.title} backdrop={movie.backdrop_path} />
-                {trailerKey && (
-                  <button onClick={() => setTrailerOpen(true)} className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-bold uppercase tracking-wider text-[10px] sm:text-xs md:text-sm transition-all shadow-xl bg-[#1F2937] text-gray-200 hover:bg-[#470000] border border-white group">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 fill-current" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                    <span className="hidden xs:inline">Watch Trailer</span>
-                    <span className="xs:hidden">Trailer</span>
-                  </button>
-                )}
-                <ActionButtons movie={movie} />
-              </div>
-            </div>
+
+        <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 bg-black/90 backdrop-blur-md rounded-full px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 border border-[#E50914]/50 shadow-lg">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#E50914] fill-current" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+            <span className="text-white font-bold text-sm sm:text-base md:text-lg">
+              {movie.vote_average.toFixed(1)}
+            </span>
+            <span className="text-gray-400 text-[10px] sm:text-xs">/10</span>
           </div>
         </div>
       </div>
 
+      <div className="flex-1 space-y-3 sm:space-y-4 md:space-y-5 pb-2 sm:pb-4">
+        <div className="text-xs sm:text-sm text-gray-400 pt-5 sm:pt-0">
+          <Link href="/" className="hover:text-[#E50914] transition">Home</Link>
+          <span className="mx-1 sm:mx-2">/</span>
+          <Link href="/finder" className="hover:text-[#E50914] transition">Movies</Link>
+          <span className="mx-1 sm:mx-2">/</span>
+          <span className="text-[#E50914] text-xs sm:text-sm line-clamp-1">{movie.title}</span>
+        </div>
+
+        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter leading-[1.1] bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent line-clamp-2">
+          {movie.title}
+        </h1>
+
+        {movie.original_title && movie.original_title !== movie.title && (
+          <p className="text-gray-400 text-xs sm:text-sm md:text-base font-light italic line-clamp-1">
+            {movie.original_title} {movie.original_language && `(${movie.original_language.toUpperCase()})`}
+          </p>
+        )}
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+          <span className="text-[#E50914] font-mono font-bold">{movie.release_date?.split("-")[0]}</span>
+          <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-600 rounded-full" />
+          <span className="text-gray-300">
+            {movie.runtime ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m` : "N/A"}
+          </span>
+          <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-600 rounded-full" />
+          <span className="text-gray-300 text-xs sm:text-sm line-clamp-1">{movie.status}</span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2 sm:pt-4">
+          <ContentLocker movieId={movie.id} movieTitle={movie.title} backdrop={movie.backdrop_path} />
+
+          {trailerKey && (
+            <button
+              onClick={() => setTrailerOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 sm:px-4 md:px-6 py-2.5 sm:py-2.5 md:py-3 rounded-full font-bold uppercase tracking-wider text-xs sm:text-xs md:text-sm transition-all shadow-xl bg-[#1F2937] text-gray-200 hover:bg-[#470000] border border-white group"
+            >
+              <svg className="w-4 h-4 md:w-5 md:h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span>Trailer</span>
+            </button>
+          )}
+
+          <ActionButtons movie={movie} />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-16 lg:px-24 mt-4 sm:mt-6 md:mt-8 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
@@ -639,6 +680,9 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
                     <Link key={kw.id} href={`/keyword/${kw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${kw.id}`} className="px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-white/5 text-gray-300 text-[10px] md:text-xs font-medium hover:bg-[#E50914] hover:text-white transition-all duration-300 hover:scale-105">#{kw.name.replace(/\s/g, '')}</Link>
                   ))}
                 </div>
+                
+                {/* Desktop Ad - Under Keywords */}
+                <DesktopSidebarAd />
               </div>
             )}
           </div>
@@ -674,6 +718,9 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
       {reviewsModalOpen && (
         <ReviewsModal reviews={reviews} totalReviews={totalReviews} onClose={() => setReviewsModalOpen(false)} />
       )}
+
+      {/* Mobile Ad - Bottom of page */}
+      <ResponsiveAd />
     </main>
   );
 }
