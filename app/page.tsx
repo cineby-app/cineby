@@ -65,18 +65,6 @@ const languages = [
 ];
 
 // ========== RESPONSIVE BANNER AD (DIFFERENT SIZES PER DEVICE) ==========
-function BannerAd() {
-  return (
-    <div className="w-full my-6 py-4">
-      <div className="flex justify-center px-4">
-        <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-3">
-          <AdsterraAd adKey={ADS.BANNER_320x50} width={320} height={50} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function RectangleAd() {
   return (
     <div className="w-full my-6 py-4">
@@ -557,7 +545,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* SINGLE RESPONSIVE BANNER AD - Between Hero and Sliders */}
-      <BannerAd />
+      <RectangleAd />
 
 
       {/* The Infinite Canvas - Sliders with Movies and TV Shows */}
