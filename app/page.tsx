@@ -68,30 +68,9 @@ const languages = [
 function BannerAd() {
   return (
     <div className="w-full my-6 py-4">
-      {/* Mobile: 320x50 */}
-      <div className="block sm:hidden">
-        <div className="flex justify-center px-2">
-          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2">
-            <AdsterraAd adKey={ADS.BANNER_320x50} width={320} height={50} />
-          </div>
-        </div>
-      </div>
-      
-      {/* Tablet: 468x60 */}
-      <div className="hidden sm:block lg:hidden">
-        <div className="flex justify-center px-4">
-          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2">
-            <AdsterraAd adKey={ADS.BANNER_468x60} width={468} height={60} />
-          </div>
-        </div>
-      </div>
-      
-      {/* Desktop: 728x90 */}
-      <div className="hidden lg:block">
-        <div className="flex justify-center">
-          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2">
-            <AdsterraAd adKey={ADS.BANNER_728x90} width={728} height={90} />
-          </div>
+      <div className="flex justify-center px-4">
+        <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-3">
+          <AdsterraAd adKey={ADS.BANNER_320x50} width={320} height={50} />
         </div>
       </div>
     </div>
