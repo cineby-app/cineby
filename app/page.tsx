@@ -64,34 +64,39 @@ const languages = [
   { code: 'de', name: 'German' }, { code: 'zh', name: 'Chinese' }, { code: 'hi', name: 'Hindi' },
 ];
 
-// ========== SINGLE RESPONSIVE BANNER AD (ONLY ONE AD PER DEVICE) ==========
+// ========== RESPONSIVE BANNER AD (DIFFERENT SIZES PER DEVICE) ==========
 function BannerAd() {
   return (
-    <div className="w-full my-6 md:my-8">
-      {/* Mobile: 320x50 - visible only on mobile */}
-      <div className="sm:hidden px-4">
-        <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2 flex justify-center">
-          <AdsterraAd adKey={ADS.BANNER_320x50} width={320} height={50} />
+    <div className="w-full my-6 py-4">
+      {/* Mobile: 320x50 */}
+      <div className="block sm:hidden">
+        <div className="flex justify-center px-2">
+          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2">
+            <AdsterraAd adKey={ADS.BANNER_320x50} width={320} height={50} />
+          </div>
         </div>
       </div>
       
-      {/* Tablet: 468x60 - visible only on tablet */}
-      <div className="hidden sm:block lg:hidden px-6">
-        <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2 flex justify-center">
-          <AdsterraAd adKey={ADS.BANNER_468x60} width={468} height={60} />
+      {/* Tablet: 468x60 */}
+      <div className="hidden sm:block lg:hidden">
+        <div className="flex justify-center px-4">
+          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2">
+            <AdsterraAd adKey={ADS.BANNER_468x60} width={468} height={60} />
+          </div>
         </div>
       </div>
       
-      {/* Desktop: 728x90 - visible only on desktop */}
-      <div className="hidden lg:block px-16">
-        <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2 flex justify-center">
-          <AdsterraAd adKey={ADS.BANNER_728x90} width={728} height={90} />
+      {/* Desktop: 728x90 */}
+      <div className="hidden lg:block">
+        <div className="flex justify-center">
+          <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-2">
+            <AdsterraAd adKey={ADS.BANNER_728x90} width={728} height={90} />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 
 function RectangleAd() {
   return (
