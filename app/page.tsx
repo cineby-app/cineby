@@ -76,6 +76,17 @@ function RectangleAd() {
     </div>
   );
 }
+function HeroAd() {
+  return (
+    <div className="w-full my-6 py-4">
+      <div className="flex justify-center px-4">
+        <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-3">
+          <AdsterraAd adKey={ADS.BANNER_300x250} width={300} height={250} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
@@ -545,7 +556,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* SINGLE RESPONSIVE BANNER AD - Between Hero and Sliders */}
-      <RectangleAd />
+      <HeroAd />
 
 
       {/* The Infinite Canvas - Sliders with Movies and TV Shows */}
