@@ -39,26 +39,27 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://cineby.vip"),
   title: {
-    default: "Cineby | Cinema, Series, Music & Entertainment",
+    default: "Cineby | Watch Free Movies & TV Shows Online in HD",
     template: "%s | Cineby",
   },
-  description: "Discover the best movies, TV series, music, and entertainment content on Cineby. Your ultimate destination for cinematic discovery and cultural exploration.",
+  description: "Stream latest movies, trending TV series, and entertainment online free in ultra HD quality. No subscription, no sign-up required. Start streaming on Cineby now!",
   keywords: [
     "cineby",
     "movies",
     "cinema",
     "series",
     "music",
-    "entertainment",
-    "film reviews",
-    "movie recommendations",
-    "what to watch",
-    "streaming guide",
-    "cinematic discovery",
-    "film culture",
-    "TV shows",
-    "music reviews",
-    "entertainment news"
+    "watch free movies",
+    "stream tv shows online",
+    "free movie streaming site",
+    "watch series online free",
+    "hd movies online",
+    "no sign up movie streaming",
+    "cineby free stream",
+    "best streaming guide",
+    "latest movies online",
+    "cineby tv",
+    "cineby vip"
   ],
   alternates: {
     canonical: "./",
@@ -81,8 +82,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Cineby | Cinema, Series, Music & Entertainment",
-    description: "Discover the best movies, TV series, music, and entertainment content. Your ultimate destination for cinematic discovery.",
+    title: "Cineby | Watch Free Movies & TV Shows Online in HD",
+    description: "Stream latest movies and trending TV series free in ultra HD quality. No registration, no ads limit. Watch Cineby now!",
     url: "https://cineby.vip",
     siteName: "Cineby",
     locale: "en_US",
@@ -98,8 +99,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cineby | Cinema, Series, Music & Entertainment",
-    description: "Discover the best movies, TV series, music, and entertainment content.",
+    title: "Cineby - Watch Free Movies & TV Shows Online in HD",
+    description: "Stream latest movies and trending TV series free in ultra HD quality. No registration, no ads limit. Watch Cineby now!",
     images: ["/img/logo.png"],
     creator: "@cineby",
     site: "@cineby",
@@ -166,7 +167,7 @@ export default function RootLayout({
     "@type": "WebSite",
     name: "Cineby",
     url: "https://cineby.vip",
-    description: "Your ultimate destination for movies, series, music, and entertainment discovery.",
+    description: "Stream latest movies and trending TV series free in ultra HD quality. No registration, no ads limit. Watch Cineby now!",
     potentialAction: {
       "@type": "SearchAction",
       "target": {

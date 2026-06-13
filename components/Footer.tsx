@@ -67,7 +67,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-gray-400 text-xs text-center lg:text-left tracking-wide font-medium max-w-xs">
-              Your premium destination for discovering amazing movies, curated collections, and cinematic insights.
+              Stream your favorite movies and trending TV shows in stunning Ultra HD quality. No sign-up required
             </p>
           </div>
 

@@ -551,6 +551,8 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
     </div>
   </div>
 </div>
+
+
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-16 lg:px-24 mt-4 sm:mt-6 md:mt-8 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">

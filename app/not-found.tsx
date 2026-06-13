@@ -3,7 +3,7 @@ import { Home, Search } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '404 - Scene Not Found | WhatToWatch',
+  title: '404 - Scene Not Found | Cineby',
   description: 'The page you are looking for has been cut from the final film.',
 };
 
