@@ -15,6 +15,20 @@ export interface Article {
 export const articles: Article[] = [
 
 {
+  id: "1",
+  slug: "cineby",
+  title: "Cineby - Watch the Popular Movies and Series Online Free in 2026",
+  excerpt: "Cineby lets you watch the best movies and TV series online for free. No registration required. Stream trending movies like Dune, The Odyssey, and Obsession instantly on Cineby SC and Cineby.app.",
+  coverImage: "/img/articles/cineby/cover.webp",
+  author: "Marcus Reynolds",
+  date: "June 13, 2026",
+  keywords: ["Cineby", "Cineby SC", "cinaby", "Cineby watch", "free movies", "free TV series", "Cineby streaming", "Cineby 2026", "Cineby alternative", "watch movies free"],
+  readTime: "8 min read",
+  showRelatedMovies: true,
+  content: "[DYNAMIC_CINEBY_CONTENT]"
+},
+  
+{
   id: "7",
   slug: "devil-wears-prada-2-2026-sequel",
   title: "The Devil Wears Prada 2: The Devil Returns to Runway After 20 Years",
