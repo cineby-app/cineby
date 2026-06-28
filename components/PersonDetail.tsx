@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { useParams, usePathname } from "next/navigation";
+import Loading from '@/app/loading';
 
 // ========== INTERFACE ==========
 interface PersonDetailProps {
@@ -498,13 +499,9 @@ export default function PersonDetail({ role: propRole = 'all' }: PersonDetailPro
     setGenreFilter('all');
   }, [mediaFilter]);
 
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-black flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-[#1F2937] border-t-[#E50914] rounded-full animate-spin" />
-      </main>
-    );
-  }
+if (loading) {
+  return <Loading />;
+}
 
   if (!person) {
     return (

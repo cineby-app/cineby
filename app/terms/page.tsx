@@ -4,6 +4,10 @@ import { Scale, ShieldCheck, HelpCircle, Terminal, AlertCircle, Ban, Radio, File
 export const metadata: Metadata = {
   title: 'Terms of the Pact | Cineby',
   description: 'The creative operating rules of our cinematic sanctuary. Respect the art, respect the platform, and protect the community core.',
+  robots: {
+  index: false,
+  follow: true,
+},
   alternates: {
     canonical: 'https://cineby.app/terms',
   },

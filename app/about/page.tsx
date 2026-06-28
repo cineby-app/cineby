@@ -4,6 +4,10 @@ import { Film, Flame, Heart, Clapperboard, Tv, Sparkles, Radio, Eye } from 'luci
 export const metadata: Metadata = {
   title: 'Our Story | Cineby',
   description: 'Built by cinema lovers for cinema lovers. The raw, unfiltered story of why we created Cineby to rescue the true art of filmmaking from the corporate algorithms.',
+  robots: {
+  index: false,
+  follow: true,
+},
   alternates: {
     canonical: 'https://cineby.app/about',
   },

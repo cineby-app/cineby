@@ -21,6 +21,7 @@ import { useState, useEffect } from "react";
 import { ContentLocker } from "@/components/ContentLocker";
 import { createPortal } from "react-dom";
 import { AdsterraAd } from "@/components/AdsterraAd";
+import Loading from '@/app/loading';
 
 const AD_KEY_300x250 = '8162f7b8c34974f34a974b6e7ecfc56c';
 
@@ -979,6 +980,12 @@ export default function TVPage({ params }: { params: Promise<{ tvSlug: string }>
   const [totalReviews, setTotalReviews] = useState(0);
   const [reviewsModalOpen, setReviewsModalOpen] = useState(false);
 
+  // ✅ ADD THIS - Force scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+
   useEffect(() => {
     async function unwrapParams() {
       const unwrapped = await params;
@@ -1069,14 +1076,11 @@ export default function TVPage({ params }: { params: Promise<{ tvSlug: string }>
     }
     return () => { document.body.style.overflow = ''; };
   }, [trailerOpen]);
-
+    
   if (loading) {
-    return (
-      <main className="min-h-screen bg-black flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-[#1F2937] border-t-[#E50914] rounded-full animate-spin" />
-      </main>
-    );
+    return <Loading />;
   }
+
   if (!show) return notFound();
 
   // ✅ FIXED: Expanded importantJobs to match movie page
@@ -1199,12 +1203,19 @@ export default function TVPage({ params }: { params: Promise<{ tvSlug: string }>
                 <span className="text-gray-300 line-clamp-1">{showStatus || 'Unknown'}</span>
               </div>
               <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {showGenres.slice(0, 5).map((g: any) => (
-                  <Link key={g.id} href={`/genre/${g.id}?name=${encodeURIComponent(g.name)}&type=tv`}
-                    className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-[#E50914] hover:border-[#E50914] transition-all duration-300 hover:scale-105">
-                    {g.name}
-                  </Link>
-                ))}
+                {/* ✅ FIXED - Generate slug from genre name */}
+                {showGenres.slice(0, 5).map((g: any) => {
+                  const genreSlug = g.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                  return (
+                    <Link 
+                      key={g.id} 
+                      href={`/genre/${genreSlug}`}
+                      className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-[#E50914] hover:border-[#E50914] transition-all duration-300 hover:scale-105"
+                    >
+                      {g.name}
+                    </Link>
+                  );
+                })}
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2 sm:pt-4">
                 <ContentLocker movieId={showId} movieTitle={showName} backdrop={showBackdropPath || undefined} />
@@ -1374,22 +1385,34 @@ export default function TVPage({ params }: { params: Promise<{ tvSlug: string }>
                 </div>
               )}
 
-              {/* Keywords */}
-              {keywords && keywords.length > 0 && (
-                <div className="bg-gradient-to-br from-[#0F0F1A] to-black rounded-xl md:rounded-2xl border border-[#1F2937] p-4 md:p-6">
-                  <div className="flex items-center gap-2 pb-2 md:pb-3 border-b border-[#1F2937] mb-3 md:mb-4">
-                    <svg className="w-4 h-4 md:w-5 md:h-5 text-[#E50914]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" /></svg>
-                    <h3 className="text-xs md:text-sm font-bold tracking-widest text-gray-400 uppercase">Keywords</h3>
+                {/* Keywords */}
+                {keywords && keywords.length > 0 && (
+                  <div className="bg-gradient-to-br from-[#0F0F1A] to-black rounded-xl md:rounded-2xl border border-[#1F2937] p-4 md:p-6">
+                    <div className="flex items-center gap-2 pb-2 md:pb-3 border-b border-[#1F2937] mb-3 md:mb-4">
+                      <svg className="w-4 h-4 md:w-5 md:h-5 text-[#E50914]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                      </svg>
+                      <h3 className="text-xs md:text-sm font-bold tracking-widest text-gray-400 uppercase">Keywords</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 md:gap-2">
+                      {keywords.slice(0, 12).map((kw: any) => {
+                        // ✅ Generate clean slug without ID
+                        const keywordSlug = kw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                        return (
+                          <Link 
+                            key={kw.id} 
+                            href={`/keyword/${keywordSlug}`}  // ✅ Clean URL: /keyword/sequel
+                            className="px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-white/5 text-gray-300 text-[10px] md:text-xs font-medium hover:bg-[#E50914] hover:text-white transition-all duration-300 hover:scale-105"
+                          >
+                            #{kw.name.replace(/\s/g, '')}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                    {/* Desktop Ad - Under Keywords */}
+                    <DesktopSidebarAd />
                   </div>
-                  <div className="flex flex-wrap gap-1.5 md:gap-2">
-                    {keywords.slice(0, 12).map((kw: any) => (
-                      <Link key={kw.id} href={`/keyword/${kw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${kw.id}`} className="px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-white/5 text-gray-300 text-[10px] md:text-xs font-medium hover:bg-[#E50914] hover:text-white transition-all duration-300 hover:scale-105">#{kw.name.replace(/\s/g, '')}</Link>
-                    ))}
-                  </div>
-                  {/* Desktop Ad - Under Keywords */}
-                  <DesktopSidebarAd />
-                </div>
-              )}
+                )}
             </div>
           </div>
         </div>

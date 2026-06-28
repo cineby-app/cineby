@@ -75,8 +75,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://cineby.vip",
     languages: {
-      "en-US": "https://cineby.vip",
-    },
+    'en-US': `https://cineby.vip`, // Tells Google to prioritize this for US searchers
+    'x-default': `https://cineby.vip`, // Fallback for everyone else
+  },
   },
   
   authors: [{ name: "Cineby Team" }],

@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: GenrePageProps): Promise<Meta
     genreName = 'Movies';
   }
   
-  const title = `${genreName} Movies | Cineby`;
-  const description = `Explore the best ${genreName} movies. Discover top-rated, popular, and latest ${genreName} films. Find your next favorite ${genreName.toLowerCase()} movie to watch tonight.`;
+  const title = `Watch Best ${genreName} Movies - Online Free HD | Cineby`;
+  const description = `Explore the best ${genreName} Movies & TV Shows. Discover top-rated, popular, and latest ${genreName} films. Find your next favorite ${genreName.toLowerCase()} movie to watch tonight.`;
   
   return {
     title,

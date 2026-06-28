@@ -19,6 +19,7 @@ import { ActionButtons } from "@/components/ActionButtons";
 import { useState, useEffect } from "react";
 import { ContentLocker } from "@/components/ContentLocker";
 import { AdsterraAd } from "@/components/AdsterraAd";
+import Loading from '@/app/loading';
 
 const AD_KEY_300x250 = '8162f7b8c34974f34a974b6e7ecfc56c';
 
@@ -316,6 +317,13 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   
+
+    // ✅ ADD THIS - Force scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+
   // Reviews state
   const [reviews, setReviews] = useState<Review[]>([]);
   const [totalReviews, setTotalReviews] = useState(0);
@@ -407,12 +415,9 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
   }, [trailerOpen]);
 
   if (loading) {
-    return (
-      <main className="min-h-screen bg-black flex items-center justify-center">
-        <div className="w-6 h-6 md:w-8 md:h-8 border-2 md:border-4 border-[#1F2937] border-t-[#E50914] rounded-full animate-spin" />
-      </main>
-    );
+    return <Loading />;
   }
+
   if (!movie) return notFound();
 
   const importantJobs = [
@@ -528,6 +533,23 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
           </span>
           <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-gray-600 rounded-full" />
           <span className="text-gray-300 text-xs sm:text-sm line-clamp-1">{movie.status}</span>
+        </div>
+
+        {/* Add this after the release date/runtime section */}
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+          {movie.genres?.slice(0, 5).map((g: any) => {
+            // ✅ Generate slug from genre name
+            const genreSlug = g.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            return (
+              <Link 
+                key={g.id} 
+                href={`/genre/${genreSlug}`}
+                className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-[#E50914] hover:border-[#E50914] transition-all duration-300 hover:scale-105"
+              >
+                {g.name}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2 sm:pt-4">
@@ -678,9 +700,18 @@ export default function MoviePage({ params }: { params: Promise<{ movieSlug: str
                   <h3 className="text-xs md:text-sm font-bold tracking-widest text-gray-400 uppercase">Keywords</h3>
                 </div>
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
-                  {keywords.slice(0, 12).map((kw: any) => (
-                    <Link key={kw.id} href={`/keyword/${kw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${kw.id}`} className="px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-white/5 text-gray-300 text-[10px] md:text-xs font-medium hover:bg-[#E50914] hover:text-white transition-all duration-300 hover:scale-105">#{kw.name.replace(/\s/g, '')}</Link>
-                  ))}
+                {keywords.slice(0, 12).map((kw: any) => {
+                  const keywordSlug = kw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                  return (
+                    <Link 
+                      key={kw.id} 
+                      href={`/keyword/${keywordSlug}`}  // ✅ Clean URL
+                      className="..."
+                    >
+                      #{kw.name.replace(/\s/g, '')}
+                    </Link>
+                  );
+                })}
                 </div>
                 
                 {/* Desktop Ad - Under Keywords */}

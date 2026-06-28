@@ -16,10 +16,10 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05050A] text-white py-16 px-6">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
-        <p className="text-gray-400 mb-8">
+    <div className="min-h-screen bg-[#05050A] text-white flex items-center justify-center px-6 pt-32 pb-16">
+      <div className="w-full max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold mb-6 text-center">Contact Us</h1>
+        <p className="text-gray-400 mb-8 text-center">
           Have questions or feedback? We'd love to hear from you!
         </p>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -55,7 +55,7 @@ export default function ContactPage() {
           </div>
           <button
             type="submit"
-            className="px-8 py-3 bg-[#b50000] text-white font-bold rounded-xl hover:bg-[#8b0000] transition-colors"
+            className="px-8 py-3 bg-[#b50000] text-white font-bold rounded-xl hover:bg-[#8b0000] transition-colors w-full md:w-auto"
           >
             Send Message
           </button>

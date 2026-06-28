@@ -4,6 +4,10 @@ import { Shield, Lock, EyeOff, Cookie, Server, Scale, UserCheck, Radio, FileText
 export const metadata: Metadata = {
   title: 'Privacy Sanctuary | Cineby',
   description: 'The honest blueprint of how we protect your space. Zero predictive tracking models, zero data commercialization, and absolute transparency.',
+  robots: {
+  index: false,
+  follow: true,
+},
   alternates: {
     canonical: 'https://cineby.app/privacy',
   },

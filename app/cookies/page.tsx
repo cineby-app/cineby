@@ -4,6 +4,10 @@ import { Cookie, EyeOff, ShieldCheck, ToggleLeft, HelpCircle, HardDrive, Radio, 
 export const metadata: Metadata = {
   title: 'Cookie Blueprint | Cineby',
   description: 'How we utilize ephemeral local storage. Only essential session files to protect your dark theater configuration—zero marketing trackers.',
+  robots: {
+  index: false,
+  follow: true,
+},
   alternates: {
     canonical: 'https://cineby.app/cookies',
   },

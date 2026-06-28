@@ -14,7 +14,6 @@ import { AdsterraAd } from '@/components/AdsterraAd';
 const AD_KEY_300x250 = '8162f7b8c34974f34a974b6e7ecfc56c';
 const BASE_URL = 'https://cineby.vip';
 
-// ✅ FIX: Use Promise for params (Next.js 15+)
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -42,14 +41,42 @@ interface MovieData {
 // Helper function to safely get title from TV or Movie data
 function getTitle(data: any): string {
   if (!data) return 'Unknown Title';
-  // TV shows use 'name', movies use 'title'
   return data.name || data.title || 'Unknown Title';
+}
+
+// ✅ STORAGE KEYS - SAME AS ActionButtons
+const STORAGE_KEYS = {
+  FAVORITES: 'wtw_favorites',
+  WATCHLIST: 'wtw_watchlist',
+  RECENT: 'wtw_recent',
+};
+
+// ✅ Helper functions to read/write localStorage
+function getStoredItems(key: string): any[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (error) {
+    console.error('Error reading from localStorage:', error);
+  }
+  return [];
+}
+
+function saveStoredItems(key: string, items: any[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(key, JSON.stringify(items));
+  } catch (error) {
+    console.error('Error saving to localStorage:', error);
+  }
 }
 
 export default function ListPage({ params }: Props) {
   const router = useRouter();
   
-  // ✅ FIX: Unwrap params using React.use()
   const { slug } = React.use(params);
   
   const [moviesData, setMoviesData] = useState<MovieData[]>([]);
@@ -58,8 +85,18 @@ export default function ListPage({ params }: Props) {
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [trailerTitle, setTrailerTitle] = useState('');
-  const [likedMovies, setLikedMovies] = useState<Set<number>>(new Set());
-  const [watchlistMovies, setWatchlistMovies] = useState<Set<number>>(new Set());
+  
+  // ✅ Load from localStorage using the SAME keys as ActionButtons
+  const [likedMovies, setLikedMovies] = useState<Set<number>>(() => {
+    const items = getStoredItems(STORAGE_KEYS.FAVORITES);
+    return new Set(items.map((item: any) => item.id));
+  });
+  
+  const [watchlistMovies, setWatchlistMovies] = useState<Set<number>>(() => {
+    const items = getStoredItems(STORAGE_KEYS.WATCHLIST);
+    return new Set(items.map((item: any) => item.id));
+  });
+  
   const [copiedId, setCopiedId] = useState<number | null>(null);
   
   const list = movieLists?.find((l) => l.slug === slug) || null;
@@ -87,11 +124,9 @@ export default function ListPage({ params }: Props) {
 
     const fetchMovies = async () => {
       try {
-        // Fetch movies and TV shows separately
         const data = await Promise.all(
           list.movies.map(async (movie: any) => {
             if (movie.type === 'tv') {
-              // Use TV show API for TV shows
               const tvData = await fetchTVDetails(movie.id.toString());
               return {
                 ...tvData,
@@ -99,7 +134,6 @@ export default function ListPage({ params }: Props) {
                 title: getTitle(tvData),
               };
             } else {
-              // Use movie API for movies
               const movieData = await fetchMovieDetails(movie.id.toString());
               return {
                 ...movieData,
@@ -110,7 +144,6 @@ export default function ListPage({ params }: Props) {
           })
         );
         
-        // ✅ FIX: Filter out items without an id and map to proper type
         const validData = data
           .filter((item) => item && typeof item.id === 'number' && !isNaN(item.id))
           .map((item) => ({
@@ -128,7 +161,6 @@ export default function ListPage({ params }: Props) {
         
         setMoviesData(validData);
 
-        // Fetch videos for each item
         const videoMap = new Map();
         for (const item of validData) {
           if (item && item.id) {
@@ -161,57 +193,79 @@ export default function ListPage({ params }: Props) {
     return () => { document.body.style.overflow = ''; };
   }, [trailerOpen]);
 
-  if (!list) {
-    return (
-      <div className="min-h-screen bg-[#05050A] flex items-center justify-center">
-        <div className="text-white text-center">
-          <p className="text-red-500 text-lg">List not found</p>
-          <Link href="/list" className="mt-4 inline-block text-[#E50914] hover:underline">
-            Back to Lists
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#05050A] flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E50914] mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading collection...</p>
-        </div>
-      </div>
-    );
-  }
-
-  const movieMap = new Map(moviesData.filter(m => m !== null).map((movie) => [movie.id, movie]));
-
-  const relatedLists = movieLists
-    ?.filter((l) => l.id !== list?.id)
-    ?.slice(0, 4) || [];
-
-  const toggleLike = (movieId: number, e: React.MouseEvent) => {
+  // ✅ Toggle Favorite - Using SAME logic as ActionButtons
+  const toggleFavorite = (movieId: number, e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    const movie = moviesData.find(m => m.id === movieId);
+    if (!movie) return;
+    
     setLikedMovies(prev => {
       const newSet = new Set(prev);
       if (newSet.has(movieId)) {
         newSet.delete(movieId);
+        // Remove from localStorage
+        const items = getStoredItems(STORAGE_KEYS.FAVORITES);
+        const filtered = items.filter((item: any) => item.id !== movieId);
+        saveStoredItems(STORAGE_KEYS.FAVORITES, filtered);
       } else {
         newSet.add(movieId);
+        // Add to localStorage
+        const items = getStoredItems(STORAGE_KEYS.FAVORITES);
+        const movieData = {
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          vote_average: movie.vote_average,
+          release_date: movie.release_date,
+          first_air_date: movie.first_air_date,
+          name: movie.name,
+          media_type: movie.media_type || 'movie'
+        };
+        const exists = items.some((item: any) => item.id === movieId);
+        if (!exists) {
+          items.push(movieData);
+          saveStoredItems(STORAGE_KEYS.FAVORITES, items);
+        }
       }
       return newSet;
     });
   };
 
+  // ✅ Toggle Watchlist - Using SAME logic as ActionButtons
   const toggleWatchlist = (movieId: number, e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    const movie = moviesData.find(m => m.id === movieId);
+    if (!movie) return;
+    
     setWatchlistMovies(prev => {
       const newSet = new Set(prev);
       if (newSet.has(movieId)) {
         newSet.delete(movieId);
+        // Remove from localStorage
+        const items = getStoredItems(STORAGE_KEYS.WATCHLIST);
+        const filtered = items.filter((item: any) => item.id !== movieId);
+        saveStoredItems(STORAGE_KEYS.WATCHLIST, filtered);
       } else {
         newSet.add(movieId);
+        // Add to localStorage
+        const items = getStoredItems(STORAGE_KEYS.WATCHLIST);
+        const movieData = {
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          vote_average: movie.vote_average,
+          release_date: movie.release_date,
+          first_air_date: movie.first_air_date,
+          name: movie.name,
+          media_type: movie.media_type || 'movie'
+        };
+        const exists = items.some((item: any) => item.id === movieId);
+        if (!exists) {
+          items.push(movieData);
+          saveStoredItems(STORAGE_KEYS.WATCHLIST, items);
+        }
       }
       return newSet;
     });
@@ -247,6 +301,36 @@ export default function ListPage({ params }: Props) {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
     </svg>
   );
+
+  if (!list) {
+    return (
+      <div className="min-h-screen bg-[#05050A] flex items-center justify-center">
+        <div className="text-white text-center">
+          <p className="text-red-500 text-lg">List not found</p>
+          <Link href="/list" className="mt-4 inline-block text-[#E50914] hover:underline">
+            Back to Lists
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#05050A] flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E50914] mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading collection...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const movieMap = new Map(moviesData.filter(m => m !== null).map((movie) => [movie.id, movie]));
+
+  const relatedLists = movieLists
+    ?.filter((l) => l.id !== list?.id)
+    ?.slice(0, 4) || [];
 
   // SEO Data
   const pageUrl = `${BASE_URL}/list/${list.slug}`;
@@ -469,7 +553,6 @@ export default function ListPage({ params }: Props) {
                       ? `https://image.tmdb.org/t/p/w500${movieData.poster_path}`
                       : '/img/placeholder.jpg';
                     
-                    // Get year from release_date or first_air_date
                     const year = movieData.release_date 
                       ? new Date(movieData.release_date).getFullYear()
                       : movieData.first_air_date 
@@ -482,10 +565,11 @@ export default function ListPage({ params }: Props) {
 
                     const videos = moviesVideos.get(movieData.id) || [];
                     const hasTrailer = videos.some(v => v.site === "YouTube");
+                    
+                    // ✅ Use the persisted states from wtw_favorites and wtw_watchlist
                     const isLiked = likedMovies.has(movieData.id);
                     const isWatchlisted = watchlistMovies.has(movieData.id);
                     
-                    // Use type from lists.ts or detect from API
                     const contentType = movie.type || (movieData.name || movieData.media_type === 'tv' ? 'tv' : 'movie');
 
                     return (
@@ -517,7 +601,6 @@ export default function ListPage({ params }: Props) {
                               <div className="absolute top-2 left-2 bg-[#E50914] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                                 {index + 1}
                               </div>
-                              {/* MOVIE / TV SHOW Badge - Using type from lists.ts */}
                               <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm px-2 py-0.5 rounded text-[8px] sm:text-[9px] font-bold text-white uppercase tracking-wider border border-white/20">
                                 {contentType === 'tv' ? 'TV SHOW' : 'MOVIE'}
                               </div>
@@ -595,8 +678,9 @@ export default function ListPage({ params }: Props) {
                                 <span>Watch Movie</span>
                               </Link>
 
+                              {/* ✅ FIXED: Love Button - Uses wtw_favorites */}
                               <button
-                                onClick={(e) => toggleLike(movieData.id, e)}
+                                onClick={(e) => toggleFavorite(movieData.id, e)}
                                 className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all text-xs sm:text-sm hover:scale-105 ${
                                   isLiked 
                                     ? 'bg-red-600 text-white hover:bg-red-700' 
@@ -607,6 +691,7 @@ export default function ListPage({ params }: Props) {
                                 <LikeIcon active={isLiked} />
                               </button>
 
+                              {/* ✅ FIXED: Watchlist Button - Uses wtw_watchlist */}
                               <button
                                 onClick={(e) => toggleWatchlist(movieData.id, e)}
                                 className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all text-xs sm:text-sm hover:scale-105 ${
@@ -638,7 +723,7 @@ export default function ListPage({ params }: Props) {
               </section>
             </div>
 
-            {/* Sidebar - Right with Sticky */}
+            {/* Sidebar */}
             <div className="lg:w-1/3 lg:sticky lg:top-24 lg:self-start space-y-4 sm:space-y-6">
               {/* Related Lists */}
               {relatedLists.length > 0 && (
@@ -714,7 +799,7 @@ export default function ListPage({ params }: Props) {
                 </div>
               )}
 
-              {/* Collection Stats - Films & TV Shows */}
+              {/* Collection Stats */}
               <div className="bg-gradient-to-br from-[#0F0F1A] to-black rounded-xl md:rounded-2xl border border-[#1F2937] p-3 sm:p-4 md:p-6">
                 <div className="flex items-center gap-2 pb-2 sm:pb-3 border-b border-[#1F2937] mb-3 sm:mb-4">
                   <div className="w-1 h-4 sm:h-5 bg-[#E50914] rounded-full" />
@@ -736,7 +821,7 @@ export default function ListPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Banner Ad 300x250 */}
+              {/* Banner Ad */}
               <div className="bg-gradient-to-br from-[#0F0F1A] to-black rounded-xl md:rounded-2xl border border-[#1F2937] p-2 sm:p-3">
                 <div className="flex justify-center">
                   <AdsterraAd adKey={AD_KEY_300x250} width={300} height={250} />

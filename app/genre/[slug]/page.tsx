@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
-import { SlidersHorizontal, X, ChevronLeft } from "lucide-react";
+import { SlidersHorizontal, X, ChevronLeft, Film, Tv } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import Loading from '@/app/loading';
 
 // Sort options
 const sortOptions = [
@@ -16,16 +17,65 @@ const sortOptions = [
   { id: 'primary_release_date.asc', name: 'Oldest First' },
 ];
 
-// Genre list
+// ✅ Genre list with slugs
 const genres = [
-  { id: 28, name: 'Action' }, { id: 12, name: 'Adventure' }, { id: 16, name: 'Animation' },
-  { id: 35, name: 'Comedy' }, { id: 80, name: 'Crime' }, { id: 99, name: 'Documentary' },
-  { id: 18, name: 'Drama' }, { id: 10751, name: 'Family' }, { id: 14, name: 'Fantasy' },
-  { id: 36, name: 'History' }, { id: 27, name: 'Horror' }, { id: 10402, name: 'Music' },
-  { id: 9648, name: 'Mystery' }, { id: 10749, name: 'Romance' }, { id: 878, name: 'Sci-Fi' },
-  { id: 10770, name: 'TV Movie' }, { id: 53, name: 'Thriller' }, { id: 10752, name: 'War' },
-  { id: 37, name: 'Western' }
+  { id: 28, name: 'Action', slug: 'action' },
+  { id: 12, name: 'Adventure', slug: 'adventure' },
+  { id: 16, name: 'Animation', slug: 'animation' },
+  { id: 35, name: 'Comedy', slug: 'comedy' },
+  { id: 80, name: 'Crime', slug: 'crime' },
+  { id: 99, name: 'Documentary', slug: 'documentary' },
+  { id: 18, name: 'Drama', slug: 'drama' },
+  { id: 10751, name: 'Family', slug: 'family' },
+  { id: 14, name: 'Fantasy', slug: 'fantasy' },
+  { id: 36, name: 'History', slug: 'history' },
+  { id: 27, name: 'Horror', slug: 'horror' },
+  { id: 10402, name: 'Music', slug: 'music' },
+  { id: 9648, name: 'Mystery', slug: 'mystery' },
+  { id: 10749, name: 'Romance', slug: 'romance' },
+  { id: 878, name: 'Sci-Fi', slug: 'sci-fi' },
+  { id: 10770, name: 'TV Movie', slug: 'tv-movie' },
+  { id: 53, name: 'Thriller', slug: 'thriller' },
+  { id: 10752, name: 'War', slug: 'war' },
+  { id: 37, name: 'Western', slug: 'western' }
 ];
+
+// ✅ Helper: Get genre ID from slug
+function getGenreIdFromSlug(slug: string): number | null {
+  const genre = genres.find(g => g.slug === slug);
+  return genre ? genre.id : null;
+}
+
+// ✅ Helper: Get genre name from slug
+function getGenreNameFromSlug(slug: string): string | null {
+  const genre = genres.find(g => g.slug === slug);
+  return genre ? genre.name : null;
+}
+
+// ✅ Helper: Check if item is TV show
+function isTVShow(item: any): boolean {
+  return item.media_type === 'tv' || item.first_air_date !== undefined;
+}
+
+// ✅ Helper: Get title from movie or TV show
+function getItemTitle(item: any): string {
+  return item.title || item.name || "Untitled";
+}
+
+// ✅ Helper: Get year from movie or TV show
+function getItemYear(item: any): string {
+  return (item.release_date?.split("-")[0]) || 
+         (item.first_air_date?.split("-")[0]) || 
+         "N/A";
+}
+
+// ✅ Helper: Get slug for movie or TV show
+function getItemSlug(item: any): string {
+  const title = getItemTitle(item);
+  const isTV = isTVShow(item);
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  return isTV ? `/tv/${slug}-${item.id}` : `/${slug}-${item.id}`;
+}
 
 const currentYear = new Date().getFullYear();
 const yearOptions = Array.from({ length: 30 }, (_, i) => (currentYear - i).toString());
@@ -36,12 +86,15 @@ const languages = [
   { code: 'de', name: 'German' }, { code: 'zh', name: 'Chinese' }, { code: 'hi', name: 'Hindi' },
 ];
 
-export default function GenrePage({ params }: { params: Promise<{ genreId: string }> }) {
+export default function GenrePage({ params }: { params: Promise<{ slug: string }> }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [genreId, setGenreId] = useState<string | null>(null);
+  
+  // ✅ Store slug and genre info
+  const [slug, setSlug] = useState<string | null>(null);
+  const [genreId, setGenreId] = useState<number | null>(null);
   const [genreName, setGenreName] = useState<string>("");
-  const [movies, setMovies] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
@@ -61,70 +114,95 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
   
   const observerTarget = useRef<HTMLDivElement>(null);
 
+  // ✅ Load params and get genre info
   useEffect(() => {
     async function loadParams() {
-      const { genreId: id } = await params;
-      setGenreId(id);
+      const resolvedParams = await params;
+      const slugValue = resolvedParams.slug;
+      setSlug(slugValue);
       
-      const nameParam = searchParams.get('name');
-      if (nameParam) {
-        setGenreName(nameParam);
-      } else if (id) {
-        const genre = genres.find(g => g.id.toString() === id);
-        if (genre) setGenreName(genre.name);
+      const id = getGenreIdFromSlug(slugValue);
+      if (id) {
+        setGenreId(id);
+        const name = getGenreNameFromSlug(slugValue);
+        if (name) setGenreName(name);
+      } else {
+        setGenreName(slugValue.charAt(0).toUpperCase() + slugValue.slice(1));
       }
     }
     loadParams();
-  }, [params, searchParams]);
+  }, [params]);
 
-  const fetchMovies = useCallback(async (pageNum: number, reset: boolean = false) => {
+  // ✅ Fetch both movies and TV shows
+  const fetchItems = useCallback(async (pageNum: number, reset: boolean = false) => {
     if (!genreId) return;
     
     setLoading(true);
     
     try {
-      let url = `https://api.themoviedb.org/3/discover/movie?api_key=ab7ec4451ddd6ddd90cfa65ba80478f5&with_genres=${genreId}&sort_by=${activeSortBy}&page=${pageNum}`;
+      const API_KEY = "ab7ec4451ddd6ddd90cfa65ba80478f5";
       
-      if (activeSelectedYear) url += `&primary_release_year=${activeSelectedYear}`;
-      if (activeSelectedLanguage) url += `&with_original_language=${activeSelectedLanguage}`;
+      // Fetch movies
+      const movieUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&sort_by=${activeSortBy}&page=${pageNum}`;
       
-      const res = await fetch(url);
-      const data = await res.json();
+      // Fetch TV shows
+      const tvUrl = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&sort_by=${activeSortBy}&page=${pageNum}`;
       
-      const newMovies = data.results?.filter((m: any) => m.poster_path) || [];
-      
-      if (reset) {
-        setTotalResults(data.total_results || 0);
-        setMovies(newMovies);
-      } else {
-        setMovies(prev => [...prev, ...newMovies]);
+      if (activeSelectedYear) {
+        // Movies use primary_release_year, TV uses first_air_date_year
+        // We'll filter client-side for TV shows
+      }
+      if (activeSelectedLanguage) {
+        // Movies use original_language, TV uses original_language
+        // We'll filter client-side
       }
       
-      setHasMore(pageNum < data.total_pages);
+      const [movieRes, tvRes] = await Promise.all([
+        fetch(movieUrl).then(r => r.json()),
+        fetch(tvUrl).then(r => r.json())
+      ]);
+      
+      const movieResults = movieRes.results?.map((m: any) => ({ ...m, media_type: 'movie' })) || [];
+      const tvResults = tvRes.results?.map((t: any) => ({ ...t, media_type: 'tv' })) || [];
+      
+      // Merge and deduplicate
+      const merged = [...movieResults, ...tvResults].filter(item => 
+        item.poster_path || item.backdrop_path
+      );
+      
+      if (reset) {
+        setTotalResults(movieRes.total_results + tvRes.total_results);
+        setItems(merged);
+      } else {
+        setItems(prev => [...prev, ...merged]);
+      }
+      
+      const maxPages = Math.max(movieRes.total_pages || 0, tvRes.total_pages || 0);
+      setHasMore(pageNum < maxPages && merged.length > 0);
       setPage(pageNum);
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
       setLoading(false);
     }
-  }, [genreId, activeSortBy, activeSelectedYear, activeSelectedLanguage]);
+  }, [genreId, activeSortBy]);
 
   // Initial fetch when genre loads
   useEffect(() => {
     if (!genreId) return;
     setPage(1);
-    setMovies([]);
-    fetchMovies(1, true);
-  }, [genreId, fetchMovies]);
+    setItems([]);
+    fetchItems(1, true);
+  }, [genreId, fetchItems]);
 
-  // Infinite scroll
+  // ✅ Infinite scroll
   useEffect(() => {
     if (!genreId) return;
     
     const observer = new IntersectionObserver(
       entries => {
         if (entries[0].isIntersecting && !loading && hasMore) {
-          fetchMovies(page + 1, false);
+          fetchItems(page + 1, false);
         }
       },
       { threshold: 0.1 }
@@ -135,17 +213,37 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
     }
     
     return () => observer.disconnect();
-  }, [loading, hasMore, page, fetchMovies, genreId]);
+  }, [loading, hasMore, page, fetchItems, genreId]);
 
-  // Apply filters - moves temp values to active values
+  // ✅ Client-side filtering for year and language
+  useEffect(() => {
+    if (items.length === 0) return;
+    
+    let filtered = [...items];
+    
+    if (activeSelectedYear) {
+      filtered = filtered.filter(item => {
+        const year = item.release_date?.split("-")[0] || item.first_air_date?.split("-")[0];
+        return year === activeSelectedYear;
+      });
+    }
+    
+    if (activeSelectedLanguage) {
+      filtered = filtered.filter(item => item.original_language === activeSelectedLanguage);
+    }
+    
+    setItems(filtered);
+  }, [activeSelectedYear, activeSelectedLanguage]);
+
+  // Apply filters
   const applyFilters = () => {
     setActiveSortBy(tempSortBy);
     setActiveSelectedYear(tempSelectedYear);
     setActiveSelectedLanguage(tempSelectedLanguage);
     setIsFilterOpen(false);
     setPage(1);
-    setMovies([]);
-    fetchMovies(1, true);
+    setItems([]);
+    fetchItems(1, true);
   };
 
   // Reset filters
@@ -158,11 +256,11 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
     setActiveSelectedLanguage('');
     setIsFilterOpen(false);
     setPage(1);
-    setMovies([]);
-    fetchMovies(1, true);
+    setItems([]);
+    fetchItems(1, true);
   };
 
-  // Open filter panel - sync temp values with active values
+  // Open filter panel
   const openFilterPanel = () => {
     setTempSortBy(activeSortBy);
     setTempSelectedYear(activeSelectedYear);
@@ -172,25 +270,9 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
 
   const activeFiltersCount = [activeSelectedYear, activeSelectedLanguage, activeSortBy !== 'popularity.desc' ? 'sort' : null].filter(Boolean).length;
 
-  // Loading state
-  if (loading && movies.length === 0) {
-    return (
-      <main className="min-h-screen bg-gradient-to-b from-[#05050A] to-black text-white pt-28 md:pt-32 pb-16 px-6 md:px-16 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <button onClick={() => router.back()} className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8">
-            <ChevronLeft className="w-5 h-5" />
-            Back
-          </button>
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="relative w-24 h-24 mx-auto mb-6">
-              <div className="absolute inset-0 rounded-full bg-[#E50914] blur-xl opacity-20 animate-pulse" />
-              <div className="w-16 h-16 border-4 border-[#1F2937] border-t-[#b50000] rounded-full animate-spin mx-auto" />
-            </div>
-            <p className="text-gray-400 text-lg">Loading {genreName} movies...</p>
-          </div>
-        </div>
-      </main>
-    );
+  // ✅ Loading state
+  if (loading && items.length === 0) {
+    return <Loading />;
   }
 
   return (
@@ -205,8 +287,6 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
           <div className="text-sm text-gray-400">
             <Link href="/" className="hover:text-[#E50914] transition">Home</Link>
             <span className="mx-2">/</span>
-            <Link href="/finder" className="hover:text-[#E50914] transition">Movies</Link>
-            <span className="mx-2">/</span>
             <span className="text-[#E50914]">{genreName}</span>
           </div>
         </div>
@@ -217,10 +297,10 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter mb-3 text-white">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DC2626] to-[#b50000]">
                 {genreName}
-              </span> Movies
+              </span> Movies & TV Shows
             </h1>
             <p className="text-gray-400 text-sm">
-              Found <span className="text-white font-semibold">{totalResults}</span> movies in this genre
+              Found <span className="text-white font-semibold">{totalResults}</span> titles in this genre
             </p>
           </div>
           
@@ -337,8 +417,8 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
                   setActiveSelectedYear('');
                   setTempSelectedYear('');
                   setPage(1);
-                  setMovies([]);
-                  fetchMovies(1, true);
+                  setItems([]);
+                  fetchItems(1, true);
                 }} />
               </span>
             )}
@@ -349,8 +429,8 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
                   setActiveSelectedLanguage('');
                   setTempSelectedLanguage('');
                   setPage(1);
-                  setMovies([]);
-                  fetchMovies(1, true);
+                  setItems([]);
+                  fetchItems(1, true);
                 }} />
               </span>
             )}
@@ -361,8 +441,8 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
                   setActiveSortBy('popularity.desc');
                   setTempSortBy('popularity.desc');
                   setPage(1);
-                  setMovies([]);
-                  fetchMovies(1, true);
+                  setItems([]);
+                  fetchItems(1, true);
                 }} />
               </span>
             )}
@@ -376,25 +456,33 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
           </span>
         </div>
 
-        {/* Movie Grid */}
-        {movies.length > 0 ? (
+        {/* Grid */}
+        {items.length > 0 ? (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5">
-              {movies.map((movie, idx) => {
-                const slug = `${movie.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${movie.id}`;
-                const year = movie.release_date ? new Date(movie.release_date).getFullYear() : '';
+              {items.map((item, idx) => {
+                const isTV = isTVShow(item);
+                const title = getItemTitle(item);
+                const year = getItemYear(item);
+                const slug = getItemSlug(item);
+                const rating = item.vote_average || 0;
                 
+                const topGenres = item.genre_ids
+                  ?.slice(0, 2)
+                  .map((id: number) => genres.find(g => g.id === id)?.name)
+                  .filter(Boolean) || [];
+
                 return (
                   <Link
-                    key={`${movie.id}-${idx}`}
-                    href={`/${slug}`}
+                    key={`${item.id}-${idx}`}
+                    href={slug}
                     className="group relative block rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl"
                   >
                     <div className="aspect-[2/3] relative bg-gradient-to-br from-[#1F2937] to-[#0F0F1A]">
-                      {movie.poster_path ? (
+                      {item.poster_path ? (
                         <Image
-                          src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
-                          alt={movie.title}
+                          src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
+                          alt={title}
                           fill
                           className="object-cover transition-all duration-500 group-hover:scale-110"
                           referrerPolicy="no-referrer"
@@ -406,14 +494,47 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
                           </svg>
                         </div>
                       )}
+
+                      {/* ✅ TV Show Badge */}
+                      {isTV ? (
+                        <div className="absolute top-2 left-2 z-10">
+                          <div className="flex items-center gap-1 bg-gradient-to-r from-red-800 to-red-600 px-2 py-0.5 rounded-md shadow-lg">
+                            <Tv className="w-3 h-3 text-white" />
+                            <span className="text-[8px] md:text-[9px] font-bold text-white uppercase tracking-wider">
+                              TV Show
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="absolute top-2 left-2 z-10">
+                          <div className="flex items-center gap-1 bg-gradient-to-r from-blue-700 to-blue-500 px-2 py-0.5 rounded-md shadow-lg">
+                            <Film className="w-3 h-3 text-white" />
+                            <span className="text-[8px] md:text-[9px] font-bold text-white uppercase tracking-wider">
+                              Movie
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Rating Badge */}
+                      <div className="absolute top-2 right-2 z-10 bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-md">
+                        <div className="flex items-center gap-0.5">
+                          <span className="text-yellow-400 text-[10px]">★</span>
+                          <span className="text-white font-bold text-[9px] md:text-[10px]">
+                            {rating ? rating.toFixed(1) : "N/A"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Hover Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
-                        <h3 className="text-white font-bold text-xs line-clamp-2">{movie.title}</h3>
+                        <h3 className="text-white font-bold text-xs line-clamp-2">{title}</h3>
                         <div className="flex items-center gap-2 mt-1">
                           <div className="flex items-center gap-1">
                             <svg className="w-3 h-3 text-yellow-500 fill-yellow-500" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                             </svg>
-                            <span className="text-yellow-500 text-xs font-bold">{movie.vote_average?.toFixed(1)}</span>
+                            <span className="text-yellow-500 text-xs font-bold">{rating.toFixed(1)}</span>
                           </div>
                           {year && <span className="text-gray-400 text-xs">{year}</span>}
                         </div>
@@ -426,18 +547,18 @@ export default function GenrePage({ params }: { params: Promise<{ genreId: strin
             
             {/* Infinite Scroll Loader */}
             <div ref={observerTarget} className="w-full flex items-center justify-center py-12">
-              {loading && movies.length > 0 && (
+              {loading && items.length > 0 && (
                 <div className="w-8 h-8 border-4 border-[#1F2937] border-t-[#b50000] rounded-full animate-spin"></div>
               )}
-              {!hasMore && movies.length > 0 && movies.length === totalResults && totalResults > 0 && (
-                <p className="text-gray-500 text-sm">End of results — {totalResults} movies found</p>
+              {!hasMore && items.length > 0 && (
+                <p className="text-gray-500 text-sm">End of results — {totalResults} titles found</p>
               )}
             </div>
           </>
         ) : (
           !loading && (
             <div className="text-center py-20">
-              <p className="text-gray-400 text-lg">No movies found in {genreName} genre.</p>
+              <p className="text-gray-400 text-lg">No titles found in {genreName} genre.</p>
               <p className="text-gray-500 text-sm mt-2">Try adjusting your filters or browse other genres.</p>
             </div>
           )

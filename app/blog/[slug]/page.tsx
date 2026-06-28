@@ -27,14 +27,13 @@ interface Props {
 }
 
 // ============================================
-// NEW: Smart Related Movies Fetcher (using related: number - TMDB movie ID)
+// Smart Related Movies Fetcher
 // ============================================
 
 async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
   const relatedId = article.related;
   const resultsMap = new Map<number, Movie & { popularity: number }>();
 
-  // Helper to add movie with popularity score
   const addMovie = (movie: Movie) => {
     if (!movie.poster_path) return;
     const pop = (movie.vote_count || 0) * (movie.vote_average || 0);
@@ -46,7 +45,6 @@ async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
     }
   };
 
-  // 1. If related ID exists, fetch similar + recommendations + same genres
   if (relatedId) {
     try {
       const mainMovie = await fetchMovieDetails(String(relatedId));
@@ -73,7 +71,6 @@ async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
     }
   }
 
-  // 2. Fallback: search by article keywords
   if (resultsMap.size < 5) {
     for (const keyword of article.keywords.slice(0, 5)) {
       if (resultsMap.size >= 10) break;
@@ -86,7 +83,6 @@ async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
     }
   }
 
-  // 3. Fallback: search by article title words
   if (resultsMap.size < 5) {
     const titleWords = article.title.split(/\s+/).filter(w => w.length > 3);
     for (const word of titleWords.slice(0, 3)) {
@@ -100,7 +96,6 @@ async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
     }
   }
 
-  // 4. Last resort: trending movies
   if (resultsMap.size < 3) {
     try {
       const trending = await fetchTrendingMovies();
@@ -108,7 +103,6 @@ async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
     } catch (e) { /* silent */ }
   }
 
-  // Sort by popularity (vote_count * vote_average), return top results
   const sorted = Array.from(resultsMap.values())
     .sort((a, b) => b.popularity - a.popularity)
     .slice(0, 12)
@@ -118,7 +112,7 @@ async function getSmartRelatedMovies(article: Article): Promise<Movie[]> {
 }
 
 // ============================================
-// Metadata
+// COMPLETE INDEPENDENT METADATA - FIXED
 // ============================================
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -127,9 +121,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!article) {
     return {
-      title: 'Article Not Found',
+      title: 'Article Not Found | Cineby',
       description: 'The requested article could not be found.',
-      robots: { index: false, follow: false },
+      robots: {
+        index: true,   // ✅ ARTICLES SHOULD BE INDEXED
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },    
     };
   }
 
@@ -138,16 +142,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? article.coverImage 
     : `${baseUrl}${article.coverImage}`;
 
+  // Use SEO title/description or fallback to regular
+  const seoTitle = article.seoTitle || article.title;
+  const seoDescription = article.seoDescription || article.excerpt;
+
+  // ✅ FIXED: Use just the SEO title (layout template adds "| Cineby")
+  // This prevents duplicate "Cineby | Cineby"
+  const metaTitle = seoTitle;
+
   return {
-    title: `${article.title} | Cineby Blog`,  // ✅ FIXED: removed metaTitle
-    description: article.excerpt,              // ✅ FIXED: removed metaDescription
+    title: metaTitle,  // ✅ Just the SEO title - layout adds "| Cineby"
+    description: seoDescription,
     keywords: article.keywords.join(', '),
     authors: [{ name: article.author }],
     creator: article.author,
     publisher: 'Cineby',
     category: 'entertainment',
     robots: {
-      index: true,
+      index: true,  // ✅ ARTICLES SHOULD BE INDEXED (not legal pages)
       follow: true,
       googleBot: {
         index: true,
@@ -158,8 +170,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: `${article.title} | Cineby Blog`, // ✅ FIXED: removed metaTitle
-      description: article.excerpt,             // ✅ FIXED: removed metaDescription
+      title: `${seoTitle} | Cineby`,  // ✅ Full title for OG (social sharing)
+      description: seoDescription,
       url: `${baseUrl}/blog/${article.slug}`,
       siteName: 'Cineby',
       locale: 'en_US',
@@ -173,21 +185,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: article.title,
-          type: 'image/jpeg',
+          alt: seoTitle,
+          type: 'image/webp',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${article.title} | Cineby Blog`, // ✅ FIXED: removed metaTitle
-      description: article.excerpt,             // ✅ FIXED: removed metaDescription
+      title: `${seoTitle} | Cineby`,  // ✅ Full title for Twitter
+      description: seoDescription,
       images: [imageUrl],
       creator: '@cineby',
       site: '@cineby',
     },
     alternates: {
       canonical: `${baseUrl}/blog/${article.slug}`,
+      languages: {
+      'en-US': `${baseUrl}/blog/${article.slug}`, // Tells Google to prioritize this for US searchers
+      'x-default': `${baseUrl}/blog/${article.slug}`, // Fallback for everyone else
+  },
+    },
+    applicationName: 'Cineby',
+    referrer: 'origin-when-cross-origin',
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
     },
   };
 }
@@ -228,13 +251,16 @@ export default async function BlogPostPage({ params }: Props) {
   const pageUrl = `${BASE_URL}/blog/${article.slug}`;
   const imageUrl = article.coverImage?.startsWith('http') ? article.coverImage : `${BASE_URL}${article.coverImage || ''}`;
 
+  const seoTitle = article.seoTitle || article.title;
+  const seoDescription = article.seoDescription || article.excerpt;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     '@id': pageUrl,
     'url': pageUrl,
-    'headline': article.title,
-    'description': article.excerpt,
+    'headline': `${seoTitle} | Cineby`,
+    'description': seoDescription,
     'keywords': article.keywords?.join(', ') || '',
     'author': {
       '@type': 'Person',
@@ -248,7 +274,12 @@ export default async function BlogPostPage({ params }: Props) {
         'url': `${BASE_URL}/img/logo.png`,
       },
     },
-    'image': imageUrl,
+    'image': {
+      '@type': 'ImageObject',
+      'url': imageUrl,
+      'width': 1200,
+      'height': 630,
+    },
     'datePublished': article.date,
     'dateModified': article.date,
   };
@@ -272,7 +303,7 @@ export default async function BlogPostPage({ params }: Props) {
       {
         '@type': 'ListItem',
         'position': 3,
-        'name': article.title,
+        'name': seoTitle,
         'item': pageUrl,
       },
     ],
@@ -294,7 +325,7 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="absolute inset-0 z-0">
           <Image
             src={article.coverImage}
-            alt={article.title}
+            alt={seoTitle}
             fill
             className="object-cover object-center scale-105"
             priority
@@ -385,7 +416,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <div className="relative aspect-video overflow-hidden">
                     <Image
                       src={relArticle.coverImage}
-                      alt={relArticle.title}
+                      alt={relArticle.seoTitle || relArticle.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -453,7 +484,7 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
 
-      {/* 3. RELATED MOVIES - Mobile: 3 movies, PC: 5 movies */}
+      {/* 3. RELATED MOVIES */}
       {relatedMovies.length > 0 && (
         <div className="mt-16 pt-8 border-t border-[#1F2937]">
           <div className="flex items-center gap-2 pb-4 border-b border-[#1F2937] mb-6">

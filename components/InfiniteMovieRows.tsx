@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Movie, slugify } from "@/lib/tmdb";
+import Loading from '@/app/loading';
 
 const TMDB_GENRES: Record<number, string> = {
   28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy",
@@ -658,19 +659,7 @@ export function InfiniteMovieRows({
   const hasTvShows = tvShows && tvShows.length > 0;
 
   if (!hasMovies && !hasTvShows) {
-    return (
-      <div className="w-full relative z-20 py-10 overflow-hidden min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative w-24 h-24 mx-auto">
-            <div className="absolute inset-0 rounded-full bg-[#E50914] blur-xl opacity-20 animate-pulse" />
-            <div className="w-16 h-16 border-4 border-[#1F2937] border-t-[#E50914] rounded-full animate-spin mx-auto" />
-          </div>
-          <p className="text-gray-400 text-sm mt-4 font-mono tracking-wider">
-            Loading cinematic universe...
-          </p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   const ITEMS_PER_ROW = 20;

@@ -6,14 +6,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Home, Compass, BookOpen, Film, Search, ListVideo } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
-import Loading from '@/app/loading'; // Import your custom Loading component
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [isSearching, setIsSearching] = useState(false); // New state for loading
   const searchInputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -30,7 +28,6 @@ export function Navbar() {
     setIsOpen(false);
     setIsSearchModalOpen(false);
     setSearchQuery('');
-    setIsSearching(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -44,26 +41,19 @@ export function Navbar() {
       if (e.key === 'Escape' && isSearchModalOpen) {
         setIsSearchModalOpen(false);
         setSearchQuery('');
-        setIsSearching(false);
       }
     };
     document.addEventListener('keydown', handleEsc);
     return () => document.removeEventListener('keydown', handleEsc);
   }, [isSearchModalOpen]);
 
+  // ✅ Redirect directly to search page - NO LOADING STATE
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Show loading animation
-      setIsSearching(true);
       setIsSearchModalOpen(false);
-      
-      // Navigate after a small delay to show loading
-      setTimeout(() => {
-        router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
-        setSearchQuery('');
-        setIsSearching(false);
-      }, 800); // Adjust timing as needed
+      router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
     }
   };
 
@@ -71,7 +61,6 @@ export function Navbar() {
   const closeSearchModal = () => {
     setIsSearchModalOpen(false);
     setSearchQuery('');
-    setIsSearching(false);
   };
 
   const navLinks = [
@@ -82,11 +71,6 @@ export function Navbar() {
     { name: 'Blog', href: '/blog', icon: BookOpen },
   ];
 
-  // Show loading while searching
-  if (isSearching) {
-    return <Loading />;
-  }
-
   return (
     <>
       <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out ${
@@ -94,7 +78,6 @@ export function Navbar() {
           ? 'bg-gradient-to-br from-[#0F0F1A]/95 to-black/95 backdrop-blur-md border-b border-[#1F2937] py-3' 
           : 'bg-gradient-to-b from-black/60 via-black/20 to-transparent py-5'
       }`}>
-        {/* FIX: Changed from grid-cols-3 to flex justification layout */}
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between h-14 w-full">
           
           {/* Logo Container */}
@@ -141,7 +124,7 @@ export function Navbar() {
             })}
           </div>
 
-          {/* Action Elements - Permanently Aligned to the Right edge */}
+          {/* Action Elements */}
           <div className="flex items-center justify-end gap-2 sm:gap-4 h-full">
             <button
               onClick={openSearchModal}
@@ -151,7 +134,6 @@ export function Navbar() {
               <Search className="w-5 h-5 transition-all duration-300 group-hover:scale-105" />
             </button>
             
-            {/* Mobile Search Icon (Optional addition for instant viewport actions) */}
             <button
               onClick={openSearchModal}
               className="block lg:hidden p-2 text-gray-300 hover:text-white transition-colors"
@@ -160,7 +142,6 @@ export function Navbar() {
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Mobile Toggle Trigger Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden text-white z-[110] p-2 pr-0"

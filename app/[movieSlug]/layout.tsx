@@ -58,23 +58,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         // Silent fail - director not critical for SEO
       }
     }
+
+    // ✅ FIXED: Generate SEO title without duplicate Cineby
+    const seoTitle = releaseYear 
+      ? `Watch ${movie.title} (${releaseYear}) - Full Movie Online`
+      : `Watch ${movie.title} - Full Movie Online`;
+    const fullTitle = `${seoTitle}`;  // ✅ Only ONE Cineby branding
+    
+    // ✅ Generate attractive description
+    const genres = movie.genres?.map((g) => g.name).join(", ") || "";
+    const description = movie.overview 
+      ? `${movie.overview.slice(0, 150)}...` 
+      : `Watch ${movie.title} (${releaseYear}) online free. ${genres} film with ${ratingValue.toFixed(1)}/10 rating. Stream in HD now on Cineby.`;
     
     return {
-      title: `Watch ${movie.title} (${releaseYear || "Unknown"}) | Cineby`,
-      description: movie.overview?.slice(0, 160) || `Watch ${movie.title} - ratings, reviews, trailers, and more.`,
-      keywords: movie.genres 
-        ? `${movie.title}, ${movie.genres.map((g) => g.name).join(", ")}, movie review, film, cinema, watch online`
-        : movie.title,
+      title: fullTitle,  // ✅ Fixed: "Watch Michael (2026) | Cineby" (NO duplicate)
+      description: description,
+      keywords: [
+        `watch ${movie.title} free online`,
+        `${movie.title} full movie`,
+        `${movie.title} ${releaseYear}`,
+        `${movie.title} streaming`,
+        ...(movie.genres?.map((g) => `${g.name.toLowerCase()} movie`) || []),
+        'watch movies online free',
+        'free movie streaming',
+        'HD movies',
+        'Cineby'
+      ],
       
       // Canonical URL
       alternates: {
         canonical: canonicalUrl,
       },
       
-      // Open Graph
+      // Open Graph - ✅ FIXED: No duplicate Cineby
       openGraph: {
-        title: `Watch ${movie.title} (${releaseYear}) - Movie Ratings & Reviews | Cineby`,
-        description: movie.overview?.slice(0, 160) || `Watch ${movie.title} trailer, check ratings, and read reviews.`,
+        title: fullTitle,  // ✅ Fixed: "Watch Michael (2026) | Cineby"
+        description: description,
         url: canonicalUrl,
         siteName: "Cineby",
         images: movie.poster_path 
@@ -94,17 +114,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ...(director && { "movie:director": director }),
       },
       
-      // Twitter Card
+      // Twitter Card - ✅ FIXED: No duplicate Cineby
       twitter: {
         card: "summary_large_image",
-        title: `${movie.title} (${releaseYear}) - Cineby`,
-        description: movie.overview?.slice(0, 160),
+        title: fullTitle,  // ✅ Fixed: "Watch Michael (2026) | Cineby"
+        description: movie.overview?.slice(0, 160) || `Watch ${movie.title} online free in HD.`,
         images: movie.poster_path ? [`https://image.tmdb.org/t/p/w500${movie.poster_path}`] : [],
         site: "@cineby",
         creator: "@cineby",
       },
       
-      // Robots Control
+      // Robots Control - ✅ ARTICLES/MOVIES SHOULD BE INDEXED
       robots: {
         index: true,
         follow: true,
@@ -154,7 +174,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: "Movie | Cineby",
       description: "Watch movies online with ratings and reviews",
       robots: {
-        index: false,
+        index: true,
         follow: true,
       },
     };

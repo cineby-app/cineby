@@ -71,6 +71,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       // Canonical URL
       alternates: {
         canonical: canonicalUrl,
+        languages: {
+        'en-US': canonicalUrl, // Tells Google to prioritize this for US searchers
+        'x-default': canonicalUrl, // Fallback for everyone else
+      },
       },
       
       // Open Graph

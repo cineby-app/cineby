@@ -20,6 +20,129 @@ function generalSlugify(text: string): string {
     .replace(/(^-|-$)+/g, '');
 }
 
+// ✅ Complete list of keywords (without IDs)
+const ALL_KEYWORDS = [
+  // Original keywords
+  'sequel',
+  'based on novel or book',
+  'friendship',
+  'superhero',
+  'space',
+  'martial arts',
+  'new york city',
+  'murder',
+  'sibling relationship',
+  'rivalry',
+  'investigation',
+  'magic',
+  'gore',
+  'ninja',
+  'alien',
+  'space travel',
+  'romance',
+  'witch',
+  'sports',
+  'politics',
+  '1970s',
+  'ambition',
+  '1980s',
+  'hero',
+  'female protagonist',
+  'shark',
+  'home invasion',
+  'kidnapping',
+  'infidelity',
+  'astronaut',
+  'scientist',
+  'bullying',
+  'espionage',
+  'spy',
+  
+  // New keywords
+  'space war',
+  'space mission',
+  'space battle',
+  'superhero team',
+  'magic show',
+  'black magic',
+  'evil alien',
+  'alien attack',
+  'alien friendship',
+  'male friendship',
+  'erotic',
+  'erotic movie',
+  'sex',
+  'epic battle',
+  'obsession',
+  'cautionary',
+  'complicated',
+  'madness',
+  'dance',
+  'paranoia',
+  'nightmare',
+  'hallucination',
+  'fear',
+  'theater',
+  'psychological horror',
+  'businessman',
+  'dark comedy',
+  'psychological thriller',
+  'family',
+  'critical',
+  'introspective',
+  'provocative',
+  'apocalypse',
+  'zombie',
+  'addiction',
+  'horror anthology',
+  'anthology',
+  'black and white',
+  'buddy cop',
+  'bank robber',
+  'bank robbery',
+  'time loop',
+  'courtroom',
+  'courtroom drama',
+  'heist',
+  'bank heist',
+  'time travel',
+  'admiring',
+  'complex',
+  'winter',
+  'twist',
+  'shocking',
+  'antagonistic',
+  'teenage romance',
+  'summer romance',
+  'survival',
+  'survival horror',
+  'serial killer',
+  'psycho',
+  'motivational',
+  'revenge',
+  'revenge murderer',
+  'philosophical',
+  'based on true story',
+  'based on novel',
+  'coming of age',
+  'dystopian',
+  'post-apocalyptic',
+  'underdog',
+  'strong female lead',
+  'anti-hero',
+  'vigilante',
+  'conspiracy',
+  'government conspiracy',
+  'artificial intelligence',
+  'parallel universe',
+  'alternate reality',
+  'supernatural',
+  'ghost',
+  'haunted house',
+  'possession',
+  'exorcism'
+];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://cineby.vip';
   
@@ -63,7 +186,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const listRoutes = movieLists.map((list) => ({
       url: `${baseUrl}/list/${list.slug}`,
-      // ✅ FIX: Use current date since updatedAt/createdAt don't exist
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -74,12 +196,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 4. Genre routes (التصنيفات)
+  // 4. Genre routes (التصنيفات) - ✅ Clean URLs without ID
   // ==========================================
   try {
     const genres = await getGenres();
     const genreRoutes = genres.map((genre) => ({
-      url: `${baseUrl}/genre/${generalSlugify(genre.name)}-${genre.id}`,
+      url: `${baseUrl}/genre/${generalSlugify(genre.name)}`,  // ✅ No ID
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
@@ -162,19 +284,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 7. Keyword routes (الكلمات المفتاحية)
+  // 7. Keyword routes (الكلمات المفتاحية) - ✅ Clean URLs without ID
   // ==========================================
-  const popularKeywords = [
-    { name: 'Action', id: 1 }, { name: 'Comedy', id: 2 }, { name: 'Drama', id: 3 },
-    { name: 'Horror', id: 4 }, { name: 'Sci-Fi', id: 5 }, { name: 'Romance', id: 6 },
-    { name: 'Thriller', id: 7 }, { name: 'Animation', id: 8 }, { name: 'Adventure', id: 9 },
-    { name: 'Fantasy', id: 10 }, { name: 'Mystery', id: 11 }, { name: 'Crime', id: 12 },
-    { name: 'Documentary', id: 13 }, { name: 'Family', id: 14 }, { name: 'History', id: 15 },
-    { name: 'Music', id: 16 }, { name: 'War', id: 17 }, { name: 'Western', id: 18 },
-  ];
-  
-  const keywordRoutes = popularKeywords.map((keyword) => ({
-    url: `${baseUrl}/keyword/${generalSlugify(keyword.name)}-${keyword.id}`,
+  const keywordRoutes = ALL_KEYWORDS.map((keyword) => ({
+    url: `${baseUrl}/keyword/${generalSlugify(keyword)}`,  // ✅ No ID
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.6,
