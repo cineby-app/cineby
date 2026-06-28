@@ -111,7 +111,7 @@ export function ContentLocker({ movieId, movieTitle, backdrop }: { movieId: numb
       if (leads && leads.length > 0) {
         // Lead completed!
         if (checkRef.current) clearInterval(checkRef.current);
-        window.location.assign(`https://cineby.sc/${movieId}`);
+        window.location.assign(`https://cineby.at/${movieId}?play=true`);
       }
     } catch (e) {
       console.error("Failed to check leads", e);

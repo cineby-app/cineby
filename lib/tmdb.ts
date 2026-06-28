@@ -174,13 +174,46 @@ export async function fetchPersonDetails(id: string): Promise<Person | null> {
   return res.json();
 }
 
-export async function fetchPersonMovies(id: string): Promise<Movie[]> {
+
+
+
+
+// ----------------------New Code------------------------
+export async function fetchPersonMovies(id: string): Promise<any[]> {
   const res = await fetch(`https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${TMDB_API_KEY}`, { next: { revalidate: 3600 } });
   if (!res.ok) return [];
   const data = await res.json();
-  const movies = data.cast?.filter((m: Movie) => m.poster_path && m.backdrop_path) || [];
-  return movies.filter((v: Movie, i: number, a: Movie[]) => a.findIndex(t => t.id === v.id) === i);
+  
+  // Combine cast (acting) and crew (directing, writing, producing, etc.)
+  const cast = (data.cast || []).map((m: any) => ({ 
+    ...m, 
+    media_type: 'movie',
+    character: m.character,      // acting role
+    job: undefined,              // cast items don't have a job
+  }));
+  
+  const crew = (data.crew || []).map((m: any) => ({
+    ...m,
+    media_type: 'movie',
+    job: m.job,                  // crew role: Director, Writer, Producer, etc.
+    character: undefined,        // crew items don't have a character
+  }));
+  
+  // Combine and deduplicate by id + job (same person can have multiple roles in same movie)
+  const all = [...cast, ...crew];
+  const unique = all.filter((v, i, a) => 
+    a.findIndex(t => t.id === v.id && t.job === v.job && t.character === v.character) === i
+  );
+  
+  // Filter out items without poster
+  return unique.filter((m: any) => m.poster_path && m.backdrop_path);
 }
+
+
+
+
+
+
 
 export async function fetchMoviesByGenre(id: string, sortBy: string = 'popularity.desc', page: number = 1): Promise<Movie[]> {
   const res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${id}&sort_by=${sortBy}&page=${page}`, { next: { revalidate: 3600 } });
@@ -568,4 +601,87 @@ export async function fetchTVShowDetails(id: string): Promise<TVShow | null> {
   const res = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${TMDB_API_KEY}&language=en-US`, { next: { revalidate: 3600 } });
   if (!res.ok) return null;
   return res.json();
+}
+
+
+// New Code
+
+export async function fetchPersonTVShows(id: string): Promise<any[]> {
+  const res = await fetch(`https://api.themoviedb.org/3/person/${id}/tv_credits?api_key=${TMDB_API_KEY}`, { next: { revalidate: 3600 } });
+  if (!res.ok) return [];
+  const data = await res.json();
+  
+  // Combine cast (acting) and crew (directing, writing, producing, etc.)
+  const cast = (data.cast || []).map((tv: any) => ({
+    id: tv.id,
+    title: tv.name,
+    original_title: tv.original_name,
+    poster_path: tv.poster_path,
+    backdrop_path: tv.backdrop_path,
+    vote_average: tv.vote_average,
+    vote_count: tv.vote_count,
+    release_date: tv.first_air_date,
+    overview: tv.overview,
+    genre_ids: tv.genre_ids,
+    original_language: tv.original_language,
+    status: tv.status,
+    character: tv.character,     // acting role
+    job: undefined,              // cast items don't have a job
+    media_type: 'tv',
+  }));
+  
+  const crew = (data.crew || []).map((tv: any) => ({
+    id: tv.id,
+    title: tv.name,
+    original_title: tv.original_name,
+    poster_path: tv.poster_path,
+    backdrop_path: tv.backdrop_path,
+    vote_average: tv.vote_average,
+    vote_count: tv.vote_count,
+    release_date: tv.first_air_date,
+    overview: tv.overview,
+    genre_ids: tv.genre_ids,
+    original_language: tv.original_language,
+    status: tv.status,
+    character: undefined,        // crew items don't have a character
+    job: tv.job,                 // crew role: Director, Writer, Producer, etc.
+    media_type: 'tv',
+  }));
+  
+  // Combine and deduplicate by id + job (same person can have multiple roles in same show)
+  const all = [...cast, ...crew];
+  const unique = all.filter((v, i, a) => 
+    a.findIndex(t => t.id === v.id && t.job === v.job && t.character === v.character) === i
+  );
+  
+  return unique.filter((tv: any) => tv.poster_path && tv.backdrop_path);
+}
+
+
+// ============================================
+// PERSON COMBINED CREDITS (for SEO & actor pages)
+// ============================================
+
+export async function fetchPersonCredits(id: string): Promise<any> {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${TMDB_API_KEY}&language=en-US`,
+    { next: { revalidate: 3600 } }
+  );
+  if (!res.ok) return null;
+  return res.json();
+}
+
+// -------------Function for related movies in blog------------------
+
+
+export async function searchMovieByTitle(title: string): Promise<Movie | null> {
+  const encoded = encodeURIComponent(title);
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encoded}&language=en-US&page=1`,
+    { next: { revalidate: 3600 } }
+  );
+  if (!res.ok) return null;
+  const data = await res.json();
+  const results = data.results?.filter((m: Movie) => m.poster_path && m.backdrop_path) || [];
+  return results[0] || null;
 }

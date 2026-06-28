@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { InfiniteMovieRows } from "@/components/InfiniteMovieRows";
 import { fetchInfiniteMovies, fetchInfiniteTV } from "@/lib/tmdb";
 import { AdsterraAd } from "@/components/AdsterraAd";
+import HeroTrailerStage from "@/components/HeroTrailerStage";
 
 // Ad keys
 const ADS = {
@@ -76,17 +77,6 @@ function RectangleAd() {
     </div>
   );
 }
-// function HeroAd() {
-//   return (
-//     <div className="w-full my-6 py-4">
-//       <div className="flex justify-center px-4">
-//         <div className="bg-gradient-to-r from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] p-3">
-//           <AdsterraAd adKey={ADS.BANNER_300x250} width={300} height={250} />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
@@ -104,6 +94,48 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
+  
+  // Place these states with your other state hooks at the top of Home()
+  const [activeSlideIdx, setActiveSlideIdx] = useState(0);
+  const [slidingArray, setSlidingArray] = useState<any[]>([]);
+
+  // Safely extract the top trending content items to populate the 3-card carousel cycle
+  useEffect(() => {
+    if (movies && movies.length > 0) {
+      setSlidingArray(movies.slice(0, 8));
+    } else if (heroMovie) {
+      setSlidingArray([heroMovie, heroMovie, heroMovie]);
+    }
+  }, [movies, heroMovie]);
+
+  // Rotate the center index active pointer every 5 seconds
+  useEffect(() => {
+    if (slidingArray.length <= 1) return;
+    const slideTimer = setInterval(() => {
+      setActiveSlideIdx((prevIdx) => (prevIdx + 1) % slidingArray.length);
+    }, 5000);
+    return () => clearInterval(slideTimer);
+  }, [slidingArray]);
+
+  // Circular loop formulas to pull the relative Left Card and Right Card layout context concurrently
+  const getLeftCardItem = () => {
+    if (slidingArray.length === 0) return null;
+    return slidingArray[(activeSlideIdx - 1 + slidingArray.length) % slidingArray.length];
+  };
+
+  const getCenterCardItem = () => {
+    if (slidingArray.length === 0) return null;
+    return slidingArray[activeSlideIdx];
+  };
+
+  const getRightCardItem = () => {
+    if (slidingArray.length === 0) return null;
+    return slidingArray[(activeSlideIdx + 1) % slidingArray.length];
+  };
+
+  const leftMediaItem = getLeftCardItem();
+  const centerMediaItem = getCenterCardItem();
+  const rightMediaItem = getRightCardItem();
   
   // Media type filter
   const [mediaType, setMediaType] = useState<'movie' | 'tv'>('movie');
@@ -226,8 +258,6 @@ export default function Home() {
   // Cancel/Close filter without applying
   const cancelFilter = () => {
     setIsFilterOpen(false);
-    // Reset filter states to previous values? Or just close?
-    // This just closes without applying changes
   };
 
   useEffect(() => {
@@ -313,7 +343,7 @@ export default function Home() {
   }
 
   return (
-    <main className="w-full bg-[#05050A] overflow-x-hidden min-h-screen relative selection:bg-[#b50000] selection:text-white">
+    <main className="w-full min-h-screen bg-[#05050A] relative overflow-x-hidden flex flex-col items-center justify-start selection:bg-[#b50000] selection:text-white">
       
       {/* Pattern Squares Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -326,72 +356,106 @@ export default function Home() {
         }} />
       </div>
 
-      {/* Hero Section */}
-      <section className="relative w-full min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] overflow-hidden">
-        {heroMovie && (
-          <>
-            <div className="absolute inset-0 z-0">
-              <Image
-                src={`https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}`}
-                alt={heroMovie.title}
-                fill
-                className="object-cover scale-105"
-                priority
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-[#05050A]/80 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#05050A] via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-l from-[#05050A]/40 via-transparent to-transparent" />
-            </div>
+    {/* ============================================= */}
+    {/* 🎯 HERO SECTION WITH FULL EDGE SHADOW GRADIENTS */}
+    {/* ============================================= */}
+    <section className="relative w-full min-h-[100vh] overflow-hidden">
+      
+      {/* 🎯 EDGE SHADOW GRADIENT - LEFT SIDE */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#05050A] to-transparent z-[5] pointer-events-none" />
+      
+      {/* 🎯 EDGE SHADOW GRADIENT - RIGHT SIDE */}
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#05050A] to-transparent z-[5] pointer-events-none" />
+      
+      {heroMovie && (
+        <>
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={`https://image.tmdb.org/t/p/original${heroMovie.backdrop_path}`}
+              alt={`${heroMovie.title} - Watch on Cineby in Full HD`}
+              fill
+              sizes="100vw"
+              className="object-cover scale-105"
+              priority
+              referrerPolicy="no-referrer"
+            />
             
-            <div className="absolute inset-0 z-[1] pointer-events-none" style={{
-              backgroundImage: `
-                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: '60px 60px'
-            }} />
-            
-            <div className="absolute inset-0 z-[2] pointer-events-none">
-              <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#E50914]/20 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#b50000]/15 rounded-full blur-3xl animate-pulse delay-1000" />
-            </div>
-          </>
-        )}
-        
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] md:min-h-[75vh] lg:min-h-[90vh] px-6 text-center">
-          <div className="max-w-5xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-white uppercase drop-shadow-2xl mb-4 md:mb-6">
-              Built For Cinema <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b50000] to-[#b50000]">
-                Lovers.
-              </span>
-            </h1>
-            <p className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl font-mono uppercase tracking-[0.2em] max-w-2xl mx-auto mb-8 md:mb-12 px-4">
-              Scroll an infinite cinematic canvas. Discover your next favorite movie.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className={`inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-full font-bold uppercase tracking-wider text-sm md:text-base transition-all shadow-xl hover:scale-105 duration-300 ${
-                  isFilterOpen || activeFiltersCount > 0 || sortBy !== 'popularity.desc'
-                    ? 'bg-white text-[#b50000] border border-[#b50000]' 
-                    : 'bg-[#b50000] border border-[#b50000] text-white hover:border-gray-500'
-                }`}
-              >
-                <SlidersHorizontal className="w-4 h-4 md:w-5 md:h-5" />
-                Filters
-                {activeFiltersCount > 0 && (
-                  <span className="ml-1 bg-white text-[#b50000] rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold">
-                    {activeFiltersCount}
-                  </span>
-                )}
-              </button>
-            </div>
+            {/* ✅ THE 3 GRADIENTS - Creates the edge shadow effect */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-[#05050A]/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#05050A] via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#05050A]/40 via-transparent to-transparent" />
+          </div>
+          
+          <div className="absolute inset-0 z-[1] pointer-events-none" style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px'
+          }} />
+          
+          <div className="absolute inset-0 z-[2] pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#E50914]/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#b50000]/15 rounded-full blur-3xl animate-pulse delay-1000" />
+          </div>
+        </>
+      )}
+      
+      {/* ✅ CENTERED CONTENT - Perfectly centered with flex */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full min-h-[100vh] px-6 text-center">
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-white uppercase drop-shadow-2xl mb-4 md:mb-6">
+            Built For Cinema <br /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b50000] to-[#b50000]">
+              Lovers.
+            </span>
+          </h1>
+          
+          <p className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl font-mono uppercase tracking-[0.2em] max-w-2xl mx-auto mb-8 md:mb-12 px-4">
+            Watch free movies &amp; popular TV shows in stunning Full HD quality
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className={`inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-full font-bold uppercase tracking-wider text-sm md:text-base transition-all shadow-xl hover:scale-105 duration-300 ${
+                isFilterOpen || activeFiltersCount > 0 || sortBy !== 'popularity.desc'
+                  ? 'bg-white text-[#b50000] border border-[#b50000]' 
+                  : 'bg-[#b50000] border border-[#b50000] text-white hover:border-gray-500'
+              }`}
+            >
+              <SlidersHorizontal className="w-4 h-4 md:w-5 md:h-5" />
+              Filters
+              {activeFiltersCount > 0 && (
+                <span className="ml-1 bg-white text-[#b50000] rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* ✅ SCROLL DOWN INDICATOR - Cool animation at bottom */}
+      <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 animate-bounce">
+        <span className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-mono">
+          Scroll to explore
+        </span>
+        <svg 
+          className="w-5 h-5 md:w-6 md:h-6 text-white/40"
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          />
+        </svg>
+      </div>
+    </section>
 
       {/* Filter Panel with Close Button */}
       <AnimatePresence>
@@ -555,24 +619,28 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* SINGLE RESPONSIVE BANNER AD - Between Hero and Sliders */}
-      {/* <HeroAd /> */}
 
-
-      {/* The Infinite Canvas - Sliders with Movies and TV Shows */}
+      {/* ============================================= */}
+      {/* 🎯 THE INFINITE MOVIE ROWS - TITLES NOW VISIBLE */}
+      {/* ============================================= */}
       {!isSearching && movies.length > 0 && tvShows.length > 0 && (
-        <>
-          <section className="relative z-20 bg-transparent pb-16">
-            <InfiniteMovieRows 
-              movies={movies}
-              tvShows={tvShows}
-            />
-          </section>
-          
-          {/* Rectangle Ad between sliders and results */}
-          <RectangleAd />
-        </>
+        <section className="relative z-20 bg-transparent pb-16 w-full">
+          <InfiniteMovieRows 
+            movies={movies}
+            tvShows={tvShows}
+          />
+        </section>
       )}
+
+      
+      {/* ============================================= */}
+      {/* 🎯 HERO TRAILER STAGE - WITH SPACING FIX */}
+      {/* ============================================= */}
+      <HeroTrailerStage 
+        movies={movies}
+        heroMovie={heroMovie}
+        isSearching={isSearching}
+      />
 
       {/* Search/Filter Results Section */}
       {isSearching && (
@@ -592,7 +660,7 @@ export default function Home() {
                   </h2>
                 </div>
                 <p className="text-gray-400 text-sm">
-                  Found <span className="text-white font-semibold">{totalResults}</span> {mediaType === 'movie' ? 'movies' : 'TV shows'}
+                  Found <span className="text-white font-semibold">{totalResults}</span> {mediaType === 'movie' ? 'movies' : 'popular TV shows'}
                 </p>
               </div>
               <button
@@ -625,12 +693,13 @@ export default function Home() {
                         href={href}
                         className="group relative block rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl"
                       >
-                        <div className="aspect-[2/3] relative bg-gradient-to-br from-[#1F2937] to-[#0F0F1A]">
+                        <div className="aspect-[2/3] relative bg-gradient-to-br from-[#1F2937] to-[#0F0F1A] overflow-hidden rounded-xl">
                           {item.poster_path ? (
                             <Image
                               src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
-                              alt={title}
+                              alt={`${title} - Watch on Cineby in Full HD`}
                               fill
+                              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
                               className="object-cover transition-all duration-500 group-hover:scale-110"
                               referrerPolicy="no-referrer"
                             />
@@ -641,7 +710,6 @@ export default function Home() {
                               </svg>
                             </div>
                           )}
-                          {/* Media Type Badge */}
                           <div className="absolute top-2 left-2 z-10 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded-md text-[8px] font-bold text-white uppercase tracking-wider">
                             {mediaType === 'movie' ? 'MOVIE' : 'TV'}
                           </div>
@@ -654,7 +722,7 @@ export default function Home() {
                                 </svg>
                                 <span className="text-[#E50914] text-xs font-bold">{item.vote_average?.toFixed(1) || 'N/A'}</span>
                               </div>
-                              {year && <span className="text-gray-400 text-xs">{year}</span>}
+                               {year && <span className="text-gray-400 text-xs">{year}</span>}
                             </div>
                           </div>
                         </div>
@@ -669,7 +737,7 @@ export default function Home() {
                     <div className="w-8 h-8 border-4 border-[#1F2937] border-t-[#b50000] rounded-full animate-spin"></div>
                   )}
                   {!hasMore && searchResults.length > 0 && searchResults.length === totalResults && totalResults > 0 && (
-                    <p className="text-gray-500 text-sm">You've reached the end — {totalResults} {mediaType === 'movie' ? 'movies' : 'TV shows'} found</p>
+                    <p className="text-gray-500 text-sm">You've reached the end — {totalResults} {mediaType === 'movie' ? 'movies' : 'popular TV shows'} found</p>
                   )}
                 </div>
               </>
@@ -692,6 +760,186 @@ export default function Home() {
         </section>
       )}
 
+      {/* ============================================= */}
+      {/* 🎯 BOTTOM 3-CARD CAROUSEL WITH EDGE SHADOW GRADIENTS */}
+      {/* ============================================= */}
+      {!isSearching && centerMediaItem && (
+        <section className="relative w-full min-h-screen xl:min-h-[90vh] flex items-center overflow-hidden pt-28 pb-16 lg:py-0">
+          
+          {/* 🎯 EDGE SHADOW GRADIENT - LEFT SIDE */}
+          <div className="absolute inset-y-0 left-0 w-32  z-[15] pointer-events-none" />
+          
+          {/* 🎯 EDGE SHADOW GRADIENT - RIGHT SIDE */}
+          <div className="absolute inset-y-0 right-0 w-32 z-[15] pointer-events-none" />
+          
+          <div className="absolute inset-0 z-0 transition-all duration-1000 ease-in-out">
+            {/* Ambient Background Layer mirrors the active center slide context */}
+            <Image
+              src={`https://image.tmdb.org/t/p/original${centerMediaItem.backdrop_path}`}
+              alt="Cinematic Backdrop"
+              fill
+              sizes="100vw"
+              className="object-cover scale-105 opacity-25 filter blur-[1px] transition-all duration-1000"
+              priority
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          
+          {/* Premium Colorful Neon Glow Orbs */}
+          <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+            <div className="absolute top-12 left-1/4 w-[500px] h-[500px] bg-[#b50000]/15 rounded-full blur-[140px] animate-pulse" />
+            <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#DC2626]/10 rounded-full blur-[120px] animate-pulse delay-1000" />
+          </div>
+          
+          {/* Main Interface Wrapper */}
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-16 lg:px-24 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            {/* Left Text Column: Precise SEO Flow */}
+            <div className="lg:col-span-7 text-center lg:text-left order-2 lg:order-1">
+              <h2 className="sr-only">Cineby - Watch Cineby Movies and Popular TV Shows Free</h2>
+
+              <h1 className="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-black tracking-tight text-white uppercase leading-[1.05] md:leading-[0.95] drop-shadow-2xl mb-6">
+                Cineby Movies <br /> 
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF1F1F] via-[#b50000] to-[#DC2626]">
+                  Free Streaming
+                </span>
+              </h1>
+              
+              <div className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed font-normal normal-case space-y-5">
+                <p className="text-gray-300 leading-relaxed mb-4">
+                  Everyone's talking about <strong className="text-white font-semibold">Cineby</strong> and for good reason. It's the free streaming platform where you can watch the latest <strong className="text-white font-semibold">Cineby movies</strong> and binge the most <strong className="text-white font-semibold">Popular TV Shows</strong> in Full HD. No catch, no fees, no limits. Just thousands of titles at your fingertips. Stop scrolling and start watching. Your next favorite show is one click away.
+                </p>
+
+                <p className="text-xs sm:text-sm md:text-base text-gray-400 border-l-2 border-[#b50000] pl-4 italic">
+                  Engineered as a fast, secure, and permanent <strong className="text-white font-medium">123 movies</strong> alternative, Cineby provides a streamlined media database for cinema enthusiasts who demand flawless theater-grade stream indexing. Skip the limits, ignore the registration walls, and access your favorite classic cinema and television catalogs instantly on any connected device.
+                </p>
+              </div>
+              
+              {/* Micro Trust Badges */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 pt-6 border-t border-[#1F2937]/40 text-gray-500 font-mono text-[10px] uppercase tracking-widest">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#b50000]" /> Zero Subscriptions
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#b50000]" /> No Account Required
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#b50000]" /> Full HD Playback
+                </div>
+              </div>
+            </div>
+
+            {/* Right Media Column: Continuous Horizontal 3-Card Stage Belt */}
+            <div className="lg:col-span-5 flex items-center justify-center order-1 lg:order-2 w-full h-[450px] md:h-[500px] relative overflow-hidden px-4 select-none">
+              <div className="relative w-full h-full flex items-center justify-center">
+                
+                {/* 1. LEFT CARD POSITION (The Previous Slide moving out) */}
+                {leftMediaItem && (
+                  <div 
+                    key={`left-${activeSlideIdx}`}
+                    style={{ transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
+                    className="absolute left-0 w-[45%] aspect-[2/3] rounded-2xl overflow-hidden opacity-25 filter blur-[1px] transform -translate-x-[20%] scale-85 bg-[#0F0F1A] border border-white/5 shadow-2xl transition-all duration-1000 z-10 pointer-events-none hidden sm:block"
+                  >
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w342${leftMediaItem.poster_path}`}
+                      alt="Previous Slide"
+                      fill
+                      sizes="200px"
+                      className="object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                  </div>
+                )}
+
+                {/* 2. CENTER STAGE ACTIVE CARD */}
+                {centerMediaItem && (
+                  <div 
+                    key={`center-${activeSlideIdx}`}
+                    style={{ transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
+                    className="absolute w-[85%] sm:w-[75%] sm:left-6 lg:left-8 aspect-[2/3] rounded-2xl bg-gradient-to-b from-[#1F2937] to-[#0F0F1A] p-[1px] shadow-2xl shadow-black/95 transition-all duration-1000 z-30"
+                  >
+                    <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#1F2937] via-transparent to-[#b50000]/40 rounded-2xl opacity-70" />
+                    
+                    <div className="relative z-10 w-full h-full rounded-2xl overflow-hidden group">
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w780${centerMediaItem.poster_path}`}
+                        alt={centerMediaItem.title || centerMediaItem.name || "Trending Poster"}
+                        fill
+                        sizes="(max-width: 1024px) 60vw, 380px"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        priority
+                        referrerPolicy="no-referrer"
+                      />
+                      
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
+                      
+                      <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                        <span className="w-2 h-2 rounded-full bg-[#b50000] animate-ping" />
+                        Now Trending
+                      </div>
+
+                      <div className="absolute bottom-0 inset-x-0 p-6 flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 className="text-white text-lg sm:text-xl font-black uppercase tracking-tight line-clamp-2 drop-shadow-md mb-2">
+                          {centerMediaItem.title || centerMediaItem.name}
+                        </h3>
+                        
+                        <div className="flex items-center gap-4 text-[10px] font-mono text-gray-400">
+                          <span className="flex items-center gap-1 text-[#FF1F1F] font-bold">
+                            ★ {centerMediaItem.vote_average?.toFixed(1) || '8.4'}
+                          </span>
+                          {(centerMediaItem.release_date || centerMediaItem.first_air_date) && (
+                            <span>{new Date(centerMediaItem.release_date || centerMediaItem.first_air_date).getFullYear()}</span>
+                          )}
+                          <span className="px-1.5 py-0.5 rounded bg-white/10 text-white font-bold uppercase tracking-wider text-[8px]">
+                            Full HD
+                          </span>
+                        </div>
+
+                        <p className="text-gray-400 text-[11px] line-clamp-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 leading-relaxed">
+                          {centerMediaItem.overview || "Stream this title free right now on Cineby with optimized network player pipelines."}
+                        </p>
+                        
+                        <Link 
+                          href={`/${(centerMediaItem.title || centerMediaItem.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${centerMediaItem.id}`}
+                          className="mt-4 w-full py-2.5 text-center bg-white text-black font-bold uppercase tracking-wider text-xs rounded-lg hover:bg-[#b50000] hover:text-white transition-colors duration-200 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        >
+                          Watch Stream
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. RIGHT CARD POSITION (The Next Slide coming down the strip) */}
+                {rightMediaItem && (
+                  <div 
+                    key={`right-${activeSlideIdx}`}
+                    style={{ transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
+                    className="absolute right-0 w-[45%] aspect-[2/3] rounded-2xl overflow-hidden opacity-25 filter blur-[1px] transform translate-x-[20%] scale-85 bg-[#0F0F1A] border border-white/5 shadow-2xl transition-all duration-1000 z-10 pointer-events-none hidden sm:block"
+                  >
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w342${rightMediaItem.poster_path}`}
+                      alt="Next Slide"
+                      fill
+                      sizes="200px"
+                      className="object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      {/* Rectangle Ad between sliders and results */}
+      <RectangleAd />
+
       {/* Search Modal */}
       <AnimatePresence>
         {isSearchModalOpen && (
@@ -711,7 +959,7 @@ export default function Home() {
             >
               <div className="bg-gradient-to-br from-[#0F0F1A] to-black rounded-2xl border border-[#1F2937] p-6 md:p-8 shadow-2xl">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl md:text-2xl font-bold text-white">Search</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-white">Search Cineby</h2>
                   <button
                     onClick={() => setIsSearchModalOpen(false)}
                     className="text-gray-400 hover:text-white transition-colors"
@@ -726,7 +974,7 @@ export default function Home() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Enter movie or TV show title..."
+                    placeholder="Search movies or popular TV shows..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -752,7 +1000,7 @@ export default function Home() {
                     }`}
                   >
                     <Tv className="w-4 h-4" />
-                    TV Shows
+                    Popular TV Shows
                   </button>
                 </div>
 
@@ -760,7 +1008,7 @@ export default function Home() {
                   onClick={handleSearch}
                   className="w-full mt-6 py-3 md:py-4 bg-gradient-to-r from-[#DC2626] to-[#b50000] hover:from-[#b50000] hover:to-[#9D174D] text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  Search
+                  Search on Cineby
                 </button>
               </div>
             </motion.div>

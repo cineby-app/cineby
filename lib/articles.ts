@@ -9,24 +9,242 @@ export interface Article {
   date: string;
   keywords: string[];
   readTime: string;
+  related?: number; // ← NEW
   showRelatedMovies?: boolean;
 }
 
 export const articles: Article[] = [
 
 {
-  id: "1",
-  slug: "cineby",
-  title: "Cineby - Watch the Popular Movies and Series Online Free in 2026",
-  excerpt: "Cineby lets you watch the best movies and TV series online for free. No registration required. Stream trending movies like Dune, The Odyssey, and Obsession instantly on Cineby SC and Cineby.app.",
-  coverImage: "/img/articles/cineby/cover.webp",
+  id: "8",
+  slug: "the-odyssey-2026-christopher-nolan",
+  title: "The Odyssey (2026) - Trailer, Tickets, and Everything About Christopher Nolan's New Film",
+  excerpt: "The countdown to the most explosive cinematic milestone of the decade has officially entered its final stretch. Following the historic, multi-Oscar-winning triumph of Oppenheimer, visionary writer-director Christopher Nolan is pivoting from the birth of the atomic age directly into the ancient bedrock of human storytelling.",
+  coverImage: "/img/articles/8/the-odyssey-2026.webp",
   author: "Marcus Reynolds",
-  date: "June 13, 2026",
-  keywords: ["Cineby", "Cineby SC", "cinaby", "Cineby watch", "free movies", "free TV series", "Cineby streaming", "Cineby 2026", "Cineby alternative", "watch movies free"],
-  readTime: "8 min read",
+  date: "June 28, 2026",
+  keywords: ["The Odyssey 2026", "Christopher Nolan", "Matt Damon", "Anne Hathaway", "Tom Holland", "Zendaya", "Robert Pattinson", "Travis Scott", "IMAX 70mm", "Universal Pictures", "Homer", "Greek Mythology"],
+  readTime: "10 min read",
+  related: 1368337,
   showRelatedMovies: true,
-  content: "[DYNAMIC_CINEBY_CONTENT]"
+  content: `
+    <div class="prose prose-invert prose-lg max-w-none">
+      <p class="text-xl text-gray-300 leading-relaxed mb-8">The countdown to the most explosive cinematic milestone of the decade has officially entered its final stretch. Following the historic, multi-Oscar-winning triumph of Oppenheimer, visionary writer-director Christopher Nolan is pivoting from the birth of the atomic age directly into the ancient bedrock of human storytelling. He is bringing Homer's legendary Greek poem to life, and the odyssey film is tracking to be an absolute juggernaut of physical action, monumental practical scale, and raw theatrical adrenaline.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">If you are a hardcore cinema lover across the United States, the United Kingdom, Europe (including France and Germany), or Australia, and you are hunting for crucial updates on the odyssey 2026, desperate to dissect the internet-breaking footage, or figuring out exactly where to secure your opening-night seats, this comprehensive guide has you covered. Here is everything you must know about this mythic blockbuster before it takes over global box offices this July.</p>
+
+      <div class="my-10 relative w-full h-96">
+        <img 
+          src="/img/articles/8/The-Odyssey-Christopher-Nolan.webp"
+          alt="Christopher Nolan on set of The Odyssey with Matt Damon"
+          class="w-full h-full object-cover rounded-xl"
+        />
+        <p class="text-sm text-gray-500 text-center mt-3">Christopher Nolan directs Matt Damon on the set of The Odyssey. Credit: Universal Pictures</p>
+      </div>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">What Is The Odyssey Movie About?</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">While The Odyssey has been adapted for television and film in the past, Christopher Nolan's upcoming 2026 iteration strips away the shiny, overly polished digital aesthetic that has plagued modern Hollywood fantasy blockbusters. Universal Pictures explicitly describes the production as a "mythic action epic". The narrative skips a dry history lesson and instead drops audiences directly into a gritty, hazardous, and punishingly concrete ancient world where the elements act like a weapon.</p>
+        [AD]
+      <p class="text-gray-400 mb-6 leading-relaxed">The movie features a sprawling running time of 172 minutes (2 hours and 52 minutes). It picks up immediately after the bloody fall of Troy, following Odysseus—the brilliant but psychologically scarred King of Ithaca—as he commands a fleet of warrior sailors on a grueling, decade-long voyage home across a treacherous Mediterranean. He must face horrific mythical entities like the Cyclops Polyphemus, the hypnotic Sirens, and the cunning sorceress Circe. All the while, he is fighting a war against time to return to his kingdom and reunite with his fiercely loyal wife, Penelope, and his growing son, Telemachus, who are fighting their own battles at home.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">The Power of Realism: Rather than relying on green screens or digital soundstages, Nolan's production team designed and built gigantic mechanical practical effects to bring creatures like the Cyclops to life. When you see waves crashing over Odysseus's ships, those are real actors fighting real oceans on location.</p>
+
+      <div class="my-10 relative w-full h-96">
+        <img 
+          src="/img/articles/8/Matt-Damon-as-Odysseus.webp"
+          alt="Matt Damon as Odysseus battling a storm in The Odyssey"
+          class="w-full h-full object-cover rounded-xl"
+        />
+        <p class="text-sm text-gray-500 text-center mt-3">Matt Damon as Odysseus battles a fierce storm in Christopher Nolan's The Odyssey. Credit: Universal Pictures</p>
+      </div>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">Decoding the Hype: The Odyssey 2026 Trailer Breakdowns</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">The internet shattered into pieces when the promotional campaign officially kicked off. Film fans hunting for the ultimate look at the odyssey 2026 trailer have been treated to some of the most visually dense, practical footage ever captured for a blockbuster.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">If you examine the official christopher nolan the odyssey trailer, it immediately establishes a tense, atmospheric, and highly physical tone. The trailer deliberately avoids treating the Greek gods like typical magical superheroes. Instead, entities like Poseidon are framed as massive, terrifying, and inescapable forces of nature that human beings cannot comprehend.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">The theatrical footage masterfully juxtaposes two parallel, high-tension storylines. On one side, it highlights the harrowing, windswept chaos of Odysseus's men enduring brutal sea storms and navigating cursed island territories. On the other side, the trailer dials up the domestic dread back in Ithaca, where Penelope is forced to execute a brilliant psychological game of delay against an increasingly aggressive and violent faction of aristocratic suitors trying to usurp the throne.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">The dialogue in the clips has already sparked massive discussion online, featuring sharp, gritty confrontations between the main antagonist Antinous and Odysseus's son, Telemachus.</p>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">Is Travis Scott in The Odyssey Movie?</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">Yes, in one of the most surprising and highly debated casting moves of the year, global rap superstar Travis Scott is officially in the movie.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">His involvement was first unsealed during a high-profile television spot that left fans completely stunned. In the trailer footage, Scott appears in period-authentic attire wielding a staff alongside Tom Holland and Jon Bernthal, delivering the haunting, gravelly line: "A war, a man, a trick — a trick to break the walls of Troy. It's burning, screaming to the ground."</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">The studio has officially confirmed that Travis Scott plays the role of a "bard" (an ancient poet and storyteller). Christopher Nolan explicitly revealed his creative reasoning for this unique casting choice, stating that he wanted to bridge the gap between ancient and modern epics:</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed italic border-l-4 border-red-600 pl-4">"I cast him because I wanted to nod towards the idea that this story has been handed down as oral poetry, which is analogous to rap."</p>
+
+      <div class="my-10 relative w-full h-96">
+        <img 
+          src="/img/articles/8/is-travis-scott-in-the-odyssey-movie.webp"
+          alt="Travis Scott as The Bard in The Odyssey"
+          class="w-full h-full object-cover rounded-xl"
+        />
+        <p class="text-sm text-gray-500 text-center mt-3">Travis Scott appears as "The Bard" in Christopher Nolan's The Odyssey. Credit: Universal Pictures</p>
+      </div>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">A Historic, Star-Studded Ensemble Cast</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">To anchor a project of this immense historical and narrative scale, the studio assembled an elite, powerhouse lineup of A-list actors.</p>
+      <div class="overflow-x-auto my-10">
+        <table class="min-w-full bg-[#1F2937] rounded-lg overflow-hidden">
+          <thead>
+            <tr class="bg-red-600">
+              <th class="px-4 py-3 text-left text-sm font-bold text-white uppercase">Actor</th>
+              <th class="px-4 py-3 text-left text-sm font-bold text-white uppercase">Character</th>
+              <th class="px-4 py-3 text-left text-sm font-bold text-white uppercase">Character Profile & Narrative Impact</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#374151]">
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Matt Damon</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Odysseus</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The clever, grizzled King of Ithaca known for his extreme strategic wit.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Anne Hathaway</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Penelope</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The fiercely protective Queen of Ithaca holding her fractured kingdom together.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Tom Holland</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Telemachus</td>
+              <td class="px-4 py-3 text-sm text-gray-400">Odysseus's brave young son, determined to defend his family's legacy.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Robert Pattinson</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Antinous</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The arrogant, ruthless primary suitor plotting to seize the Ithacan crown.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Zendaya</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Athena</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The strategic goddess of wisdom who acts as Odysseus's divine protector.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Charlize Theron</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Calypso</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The alluring, divine nymph who detains Odysseus on her island.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Samantha Morton</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Circe</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The dangerous sorceress who transforms Odysseus's crew.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Lupita Nyong'o</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Helen of Troy</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The legendary figure whose beauty catalyzed the catastrophic Trojan War.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Jon Bernthal</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Menelaus</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The fierce, battle-hardened Greek King of Sparta.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Elliot Page</td>
+              <td class="px-4 py-3 text-sm text-gray-300">Sinon</td>
+              <td class="px-4 py-3 text-sm text-gray-400">Odysseus's cunning cousin instrumental in the Trojan Horse strategy.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-sm text-white font-medium">Travis Scott</td>
+              <td class="px-4 py-3 text-sm text-gray-300">The Bard</td>
+              <td class="px-4 py-3 text-sm text-gray-400">The ancient storyteller framing the epic narrative.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">To accurately portray the aging, physically battered warrior king, Matt Damon underwent an intensive physical training regimen. Furthermore, because the production completely refused to use artificial prosthetics or fake visual effects for facial hair on set, Damon grew a completely natural beard for over a consecutive year to give Odysseus an authentic, weather-beaten appearance.</p>
+
+        [AD]
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">Behind the Scenes: 100% IMAX Camera Production</h2>
+      <p class="text-gray-400 mb-6 leading-relaxed">Operating with a massive $250 million net production budget, The Odyssey has already secured its place in the history books of filmmaking. It stands as the first major feature-length blockbuster movie to be captured entirely using ultra-premium IMAX 65mm and 70mm analog film cameras.</p>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">To build a completely immersive world without the sterile look of modern digital backdrops, the production crew physically traveled across multiple continents to capture raw geography between February and August of 2025:</p>
+
+      <ul class="list-disc pl-6 text-gray-400 space-y-2 mb-6">
+        <li><span class="text-white font-bold">Morocco & Western Sahara:</span> The sand-blasted coastlines of Al-Dakhla were utilized to capture desolate, supernatural desert islands.</li>
+        <li><span class="text-white font-bold">Italy & Greece:</span> Grounding the architectural roots of the story, filming took place across the Peloponnese region and historic island landscapes.</li>
+        <li><span class="text-white font-bold">Iceland:</span> Providing a cold, eerie, and highly unsettling atmospheric environment for the literal edges of the known ancient world map.</li>
+        <li><span class="text-white font-bold">Scotland & Malta:</span> Serving as the choppy, hostile, and dangerous setting for massive open-ocean naval choreography shot in the open seas.</li>
+      </ul>
+
+      <div class="my-10 relative w-full h-96">
+        <img 
+          src="/img/articles/8/IMAX-70mm-camera.webp"
+          alt="IMAX 70mm camera on location for The Odyssey"
+          class="w-full h-full object-cover rounded-xl"
+        />
+        <p class="text-sm text-gray-500 text-center mt-3">An IMAX 70mm film camera captures a scene on location for The Odyssey. Credit: Universal Pictures</p>
+      </div>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">When Does The Odyssey Movie Come Out?</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">Mark your calendars: the official global theatrical release date for the movie is locked in for July 17, 2026. The film will hold its highly anticipated world premiere in London on July 6, 2026, before expanding to theaters worldwide globally a few days later.</p>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">How to Secure Your The Odyssey Movie Tickets Across Global Markets</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">Because this movie is custom-built from the ground up for large-format screens, securing your the odyssey movie tickets requires strategic planning. Opening weekend premium showtimes across major global cities are experiencing unprecedented demand. To maximize your viewing experience, you should directly consult the major ticketing channels and theatrical platforms based on your location:</p>
+
+      <div class="bg-[#1F2937] p-6 rounded-lg my-10">
+        <h3 class="text-white font-bold mb-4 uppercase tracking-wide text-lg">1. United States Ticket Outlets</h3>
+        <ul class="space-y-3 text-sm text-gray-400">
+          <li><span class="text-white font-bold">Official AMC Theatres Portal:</span> The primary hub for booking premium IMAX 70mm showtimes, checking local seating charts, and securing exclusive theater-specific collectibles across the USA.</li>
+          <li><span class="text-white font-bold">Fandango Movie Tickets:</span> Use this massive network to cross-reference multiple American theater chains simultaneously, set up instant localized alerts, and purchase standard or premium seats.</li>
+          <li><span class="text-white font-bold">Regal Cinemas:</span> Perfect for checking secondary large-format availability, RPX options, and tracking advance ticket rollouts across the country.</li>
+        </ul>
+      </div>
+
+      <div class="bg-[#1F2937] p-6 rounded-lg my-10">
+        <h3 class="text-white font-bold mb-4 uppercase tracking-wide text-lg">2. United Kingdom & Europe Ticket Outlets</h3>
+        <ul class="space-y-3 text-sm text-gray-400">
+          <li><span class="text-white font-bold">Odeon Cinemas UK & Europe:</span> The definitive destination for moviegoers across the UK, Ireland, and select European hubs to secure premium seats, including the world-famous BFI IMAX in London.</li>
+          <li><span class="text-white font-bold">Cineworld Cinemas UK:</span> Offering comprehensive scheduling across the UK for standard laser projections and massive screen formats.</li>
+          <li><span class="text-white font-bold">Pathé Théâtres:</span> The leading premium cinema network across France, Germany, and Switzerland, anchoring localized translations and premium IMAX ticket portals for European audiences.</li>
+        </ul>
+      </div>
+
+      <div class="bg-[#1F2937] p-6 rounded-lg my-10">
+        <h3 class="text-white font-bold mb-4 uppercase tracking-wide text-lg">3. Australia Ticket Outlets</h3>
+        <ul class="space-y-3 text-sm text-gray-400">
+          <li><span class="text-white font-bold">Hoyts Cinemas Australia:</span> The dedicated regional hub for Australian fans to track session times, check IMAX availability, and book tickets directly for the mid-July release window.</li>
+          <li><span class="text-white font-bold">Event Cinemas:</span> Excellent for tracking V-Max and large-format ticket rollouts across major Australian territories.</li>
+        </ul>
+      </div>
+
+      <div class="bg-[#1F2937] p-6 rounded-lg my-10">
+        <h3 class="text-white font-bold mb-2 uppercase tracking-wide">Step 1: Identify True 70mm Locations</h3>
+        <p class="text-sm text-gray-400 mb-4">Check if your local region features a rare, true IMAX 70mm film projector (which projects in the uncompressed, massive 1.43:1 vertical aspect ratio) rather than a standard digital screen.</p>
+        [AD]
+        <h3 class="text-white font-bold mb-2 uppercase tracking-wide">Step 2: Avoid the Front Rows</h3>
+        <p class="text-sm text-gray-400 mb-4">Because the native IMAX cinematography spans the absolute ceiling and floor of the auditorium, look for seats situated in the middle-to-back rows. Sitting too close to the front will make it incredibly difficult to track the fast-paced maritime combat.</p>
+        
+        <h3 class="text-white font-bold mb-2 uppercase tracking-wide">Step 3: Turn on Direct App Alerts</h3>
+        <p class="text-sm text-gray-400">Enable push alerts on your chosen regional theatrical apps. While initial batches of premium tickets sold out, standard evening showtimes and newly added late-night blocks continue to roll out heavily as the July release date nears.</p>
+      </div>
+
+      <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">The Final Takeaway</h2>
+
+      <p class="text-gray-400 mb-6 leading-relaxed">Armed with a historic all-IMAX format, an unmatched cast of award-winning actors, and a relentless dedication to physical filmmaking over computer graphics, The Odyssey isn't just another blockbuster coming soon—it is tracking to be a monumental milestone in modern cinema history. Make sure you book your tickets via the official theater outlets early to experience this epic myth on the largest screen imaginable!</p>
+
+      <div class="border-t border-[#1F2937] mt-12 pt-8 text-center">
+        <p class="text-sm text-gray-500">Written by Marcus Reynolds | Senior Film Industry Analyst</p>
+        <p class="text-xs text-gray-600 mt-2">Sources: Collider, Rotten Tomatoes, Hoyts, Wikipedia, Universal Pictures, IMAX Corporation</p>
+        <p class="text-xs text-gray-600 mt-1">The Odyssey releases in theaters worldwide on July 17, 2026 | Runtime: 172 minutes</p>
+        <p class="text-xs text-gray-600 mt-1">Cineby — Cinema, series, music, and everything in between</p>
+      </div>
+    </div>
+  `
 },
+
+// ----------------------Article 7-----------------------
   
 {
   id: "7",
@@ -38,6 +256,7 @@ export const articles: Article[] = [
   date: "June 4, 2026",
   keywords: ["The Devil Wears Prada 2", "Meryl Streep", "Anne Hathaway", "Emily Blunt", "Stanley Tucci", "Kenneth Branagh", "Miranda Priestly", "Runway Magazine", "20th Century Studios", "Fashion Film"],
   readTime: "10 min read",
+  related: 1314481,
   showRelatedMovies: true,
   content: `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -137,7 +356,7 @@ export const articles: Article[] = [
 
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">Critical Reception</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">The sequel has earned a Certified Fresh rating on Rotten Tomatoes, with critics praising the film's ability to balance nostalgia with contemporary relevance. Director David Frankel returns to the franchise, and screenwriter Aline Brosh McKenna has crafted a story that honors the original while pushing the characters into uncharted territory [citation:4].</p>
-
+      [AD]
       <p class="text-gray-400 mb-6 leading-relaxed">"We wanted to honor the original's soul while exploring how these characters have matured over two decades," Frankel stated. "It's a deep dive into an industry that has been completely redefined since we last saw them" [citation:4].</p>
 
       <p class="text-gray-400 mb-6 leading-relaxed">Critics have singled out Emily Blunt's performance as a highlight, with her transformation from frantic assistant to formidable executive earning particular praise. The rivalry between Streep and Blunt forms the emotional and dramatic core of the film, providing the sharp, witty exchanges that fans of the original loved.</p>
@@ -164,7 +383,7 @@ export const articles: Article[] = [
       <p class="text-gray-400 mb-6 leading-relaxed">But the fashion served a higher purpose. Streep announced that all the clothes, jewelry, bags, and shoes featured in The Devil Wears Prada 2 will be auctioned to benefit the Committee to Protect Journalists, an organization dedicated to defending press freedom worldwide [citation:10].</p>
 
       <p class="text-gray-400 mb-6 leading-relaxed">Anna Wintour, the longtime Vogue editor who is widely considered the inspiration for Miranda Priestly, also attended the New York premiere. Her presence added an extra layer of authenticity to an event already steeped in fashion history [citation:10].</p>
-
+      [AD]
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">A Third Installment?</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">Given the sequel's overwhelming success, speculation about a third film has already begun. Anne Hathaway addressed the possibility during her Today Show appearance.</p>
 
@@ -186,7 +405,7 @@ export const articles: Article[] = [
       <p class="text-gray-400 mb-6 leading-relaxed">The Devil Wears Prada 2 is currently playing in theaters worldwide. The film was released on May 1, 2026, through 20th Century Studios. It is rated PG-13 for some material that may be inappropriate for children under 13. The runtime is 120 minutes [citation:7].</p>
 
       <p class="text-gray-400 mb-6 leading-relaxed">As a 20th Century Studios title, the film is expected to stream on Disney+ and Hulu in the United States after its theatrical run. Industry analysts suggest a digital window between late August and early September 2026, in line with previous Disney releases. A premium video-on-demand rental phase will likely precede the OTT release [citation:5].</p>
-
+      [AD]
       <div class="border-t border-[#1F2937] mt-12 pt-8 text-center">
         <p class="text-sm text-gray-500">Written by Marcus Reynolds | Senior Film Industry Analyst</p>
         <p class="text-xs text-gray-600 mt-2">Sources: 20th Century Studios, Disney, BBC, IMDb, E! News, Variety, The Hollywood Reporter</p>
@@ -209,6 +428,7 @@ export const articles: Article[] = [
   date: "June 4, 2026",
   keywords: ["Backrooms", "Kane Parsons", "Chiwetel Ejiofor", "Renate Reinsve", "A24", "Horror Movie 2026", "Creepypasta", "Liminal Space", "Box Office Record"],
   readTime: "12 min read",
+  related: 1083381,
   showRelatedMovies: true,
   content: `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -364,6 +584,7 @@ export const articles: Article[] = [
   date: "June 4, 2026",
   keywords: ["Obsession", "Curry Barker", "Michael Johnston", "Inde Navarrette", "Horror Movie 2026", "One Wish Willow", "Blumhouse", "Focus Features", "CBFC Cuts"],
   readTime: "11 min read",
+  related: 1339713,
   showRelatedMovies: true,
   content: `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -382,7 +603,7 @@ export const articles: Article[] = [
         />
         <p class="text-sm text-gray-500 text-center mt-3">Michael Johnston stars as Bear, a hopeless romantic whose desperate wish unleashes a nightmare. Credit: Focus Features</p>
       </div>
-
+      [AD]
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">From YouTube to Hollywood: The Curry Barker Story</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">The most remarkable aspect of Obsession is not its box office success. It is the path its director took to get there. Curry Barker began his career as one half of the viral YouTube sketch comedy duo "That's a Bad Idea." He built a devoted online following through short comedy and horror films. His eight hundred dollar budget found footage debut, Milk and Serial, was released directly to YouTube. It amassed over two million views. It landed him meetings with practically every major horror producer in town. [citation:1]</p>
 
@@ -416,7 +637,7 @@ export const articles: Article[] = [
           <li class="flex justify-between pb-2"><span>Theatrical Release:</span><span class="text-white font-bold">May 15, 2026</span></li>
         </ul>
       </div>
-
+      [AD]
       <div class="my-10 relative w-full h-96">
         <img 
           src="/img/articles/5/2.webp"
@@ -485,6 +706,7 @@ export const articles: Article[] = [
   date: "June 4, 2026",
   keywords: ["Dune Part Three", "Dune Messiah", "Denis Villeneuve", "Timothée Chalamet", "Zendaya", "Robert Pattinson", "Anya Taylor-Joy", "Scytale", "December 2026", "Warner Bros"],
   readTime: "12 min read",
+  related: 1170608,
   showRelatedMovies: true,
   content: `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -533,7 +755,7 @@ export const articles: Article[] = [
       <p class="text-gray-400 mb-6 leading-relaxed">The casting news that broke the internet is now confirmed. Robert Pattinson plays Scytale, a Face Dancer assassin from the Bene Tleilax. In the books, the Tleilaxu are genetic manipulators capable of creating gholas, clones of the dead with all their memories intact. Scytale serves as their emissary in the conspiracy against Paul. He is calm, calculating, and utterly inhuman in his detachment.</p>
 
       <p class="text-gray-400 mb-6 leading-relaxed">Pattinson has proven his range since his Twilight days. His work in Good Time, The Lighthouse, and The Batman established him as one of the most interesting actors of his generation. The trailer offers only a glimpse of his character. He speaks in a soft monotone. His eyes betray nothing. He is the calm at the center of the storm, which makes him far more terrifying than any screaming villain.</p>
-
+      [AD]
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-10">
         <div class="text-center">
           <img src="/img/articles/4/actor-1.webp" alt="Timothée Chalamet" class="rounded-full w-24 h-24 mx-auto object-cover mb-2" />
@@ -573,7 +795,7 @@ export const articles: Article[] = [
 
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">The Return of Duncan Idaho</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">Jason Momoa's Duncan Idaho died in the first Dune film. He was killed defending Paul and Lady Jessica from Sardaukar assassins. It was a heroic end for a beloved character. But in the world of Dune, death is not always permanent. The Tleilaxu possess the technology to resurrect the dead as gholas. They can restore their memories, their skills, and their personalities. Such creations are expensive and dangerous. The Tleilaxu rarely share them lightly.</p>
-
+      [AD]
       <p class="text-gray-400 mb-6 leading-relaxed">The trailer confirms that Duncan has been returned to the universe. Momoa appears in several shots, looking confused and haunted. In the books, the Duncan ghola serves as a tool of the conspiracy. He is intended to infiltrate Paul's inner circle and destroy him from within. But gholas are unpredictable. They sometimes remember their past lives. They sometimes develop loyalty to those they were meant to betray.</p>
 
       <p class="text-gray-400 mb-6 leading-relaxed">This storyline adds an emotional layer to the film. Paul has lost everyone he loved. His father is dead. His mentor, Gurney Halleck, is distant. Chani is slipping away from him. The return of Duncan offers a potential salvation. It also offers a potential knife in the back. The ambiguity of the character creates tension that runs through the entire narrative.</p>
@@ -651,6 +873,7 @@ export const articles: Article[] = [
   date: "June 4, 2026",
   keywords: ["The Odyssey", "Christopher Nolan", "Matt Damon", "Tom Holland", "Zendaya", "Greek Mythology", "IMAX 70mm", "Universal Pictures", "July 2026"],
   readTime: "8 min read",
+  related: 1368337,
   showRelatedMovies: true,
   content: `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -720,7 +943,7 @@ export const articles: Article[] = [
           <li class="flex justify-between pb-2"><span>Confirmed cast members:</span><span class="text-white font-bold">15+</span></li>
         </ul>
       </div>
-
+      [AD]
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">What the Trailer Reveals</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">The trailer, which debuted on The Late Show with Stephen Colbert, offers a breathtaking glimpse into the epic's most iconic moments. We finally see Odysseus's harrowing encounter with the monstrous Polyphemus, as the hero and his men fight for survival inside the giant's cave. Charlize Theron's Circe is shown wielding mystical powers, while Zendaya's Athena appears as a shimmering, commanding presence on the battlefield. The trailer ends with Matt Damon's Odysseus floating on a piece of rubble in the middle of the ocean.</p>
 
@@ -790,6 +1013,7 @@ export const articles: Article[] = [
   date: "June 1, 2026",
   keywords: ["Euphoria", "Euphoria Season 3", "Zendaya", "Rue Bennett", "HBO", "Series Finale", "Sam Levinson", "Euphoria ending", "Angus Cloud", "Eric Dane"],
   readTime: "12 min read",
+  related: 1325734,
   showRelatedMovies: true,
   content: `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -892,7 +1116,7 @@ export const articles: Article[] = [
 
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">Zendaya's Farewell</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">Following her final day of filming, Zendaya addressed the crew in an emotional farewell. "I just wanted to say thank you. I'm incredibly grateful for every single one of you," the 29-year-old actress said. "Many of you have been here from the beginning and watched me grow up. It's been such a pleasure and an honor."<br><br><a href="https://www.eonline.com/ca/news/1432544/storm-reid-trolls-euphoria-season-3-finale-absence" target="_blank" rel="noopener noreferrer">Source: E! Online</a></p>
-
+      [AD]
       <p class="text-gray-400 mb-6 leading-relaxed">Zendaya won two Emmy Awards for Outstanding Lead Actress in a Drama Series for her portrayal of Rue—making her the youngest two-time winner in the category's history. Her performance throughout the show's run has been widely regarded as one of the defining television performances of the decade.</p>
 
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">Legacy of a Cultural Phenomenon</h2>
@@ -954,6 +1178,7 @@ export const articles: Article[] = [
   "date": "June 1, 2026",
   "keywords": ["Disclosure Day", "Steven Spielberg", "Emily Blunt", "Josh O'Connor", "Alien Movie", "Sci-Fi 2026", "Universal Pictures"],
   "readTime": "10 min read",
+  related: 1275779,
   "showRelatedMovies": true,
   "content": `
     <div class="prose prose-invert prose-lg max-w-none">
@@ -1016,7 +1241,7 @@ export const articles: Article[] = [
       </div>
       
       <p class="text-gray-400 mb-6 leading-relaxed">The teaser then introduces Josh O'Connor's character, a man who declares that "people have a right to know the truth" and seeks "full disclosure, to the whole world, all at once." His mission appears to be global revelation, a coordinated announcement of extraterrestrial contact that would simultaneously reach all seven billion inhabitants of Earth.</p>
-      
+            [AD]
       <h2 class="text-3xl font-black text-white mt-12 mb-6 uppercase tracking-tight border-l-4 border-red-600 pl-4">An All-Star Cast</h2>
       <p class="text-gray-400 mb-6 leading-relaxed">The ensemble assembled for Disclosure Day is among the most impressive of Spielberg's career. Emily Blunt, a SAG Award winner and Oscar nominee for Oppenheimer and A Quiet Place, leads the cast. Josh O'Connor, an Emmy and Golden Globe winner celebrated for Challengers and The Crown, co-stars as the truth-seeking protagonist.</p>
       

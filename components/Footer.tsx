@@ -67,7 +67,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-gray-400 text-xs text-center lg:text-left tracking-wide font-medium max-w-xs">
-              Stream your favorite movies and trending TV shows in stunning Ultra HD quality. No sign-up required
+              Cineby is your best place to stream your favorite movies and Popular TV Shows in stunning Ultra HD quality. No sign-up required.
             </p>
           </div>
 
@@ -76,6 +76,7 @@ export function Footer() {
             {[
               { name: 'Home', href: '/' },
               { name: 'Movie Finder', href: '/finder' },
+              { name: 'Lists', href: '/list'},
               { name: 'Library', href: '/library' },
               { name: 'Blog', href: '/blog' },
             ].map((item) => (

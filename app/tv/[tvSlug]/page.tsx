@@ -57,6 +57,18 @@ function slugify(name: string, id: number): string {
   return `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${id}`;
 }
 
+// ✅ FIX: Added getRoleHref function - routes to role-specific pages
+function getRoleHref(person: any): string {
+  const slug = slugify(person.name, person.id);
+  if (person.job === 'Director') return `/director/${slug}`;
+  if (['Writer', 'Screenplay', 'Story'].includes(person.job)) return `/writer/${slug}`;
+  if (['Producer', 'Executive Producer'].includes(person.job)) return `/producer/${slug}`;
+  if (person.job === 'Original Music Composer' || person.job === 'Music') return `/sound/${slug}`;
+  if (person.job === 'Director of Photography' || person.job === 'Cinematographer') return `/camera/${slug}`;
+  if (person.job === 'Editor' || person.job === 'Editing') return `/editor/${slug}`;
+  return `/person/${person.id}`;
+}
+
 function formatReviewDate(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -245,7 +257,7 @@ function EpisodePopup({
               <button
                 onClick={() =>
                   window.open(
-                    `https://cineby.sc/tv/${seriesId}/${selectedSeason}/${episode.episode_number}`,
+                    `https://cineby.at/tv/${seriesId}/${selectedSeason}/${episode.episode_number}?play=true`,
                     "_blank"
                   )
                 }
@@ -1067,7 +1079,18 @@ export default function TVPage({ params }: { params: Promise<{ tvSlug: string }>
   }
   if (!show) return notFound();
 
-  const importantJobs = ['Director', 'Writer', 'Producer', 'Executive Producer', 'Original Music Composer'];
+  // ✅ FIXED: Expanded importantJobs to match movie page
+  const importantJobs = [
+    'Director', 'Writer', 'Screenplay', 'Story',
+    'Producer', 'Executive Producer',
+    'Director of Photography', 'Cinematographer',
+    'Editor', 'Editing',
+    'Production Design', 'Art Direction', 'Set Decoration',
+    'Costume Design', 'Costume Designer',
+    'Makeup Artist', 'Hairstylist',
+    'Visual Effects', 'VFX Supervisor',
+    'Sound Designer', 'Sound Editor', 'Original Music Composer', 'Music'
+  ];
   const filteredCrew = (crew || []).filter(p => p.profile_path && importantJobs.includes(p.job)).slice(0, 16);
 
   const handleImageClick = (index: number) => {
@@ -1233,15 +1256,36 @@ export default function TVPage({ params }: { params: Promise<{ tvSlug: string }>
                 </div>
               )}
 
-              {/* Crew Section - With Horizontal Scroller */}
+              {/* ✅ FIXED CREW SECTION - Now using getRoleHref for role-specific links */}
               {filteredCrew && filteredCrew.length > 0 && (
                 <div className="space-y-3 md:space-y-5">
-                  <div className="flex items-center gap-2 md:gap-3"><div className="w-1 h-5 md:h-8 bg-[#E50914] rounded-full" /><h2 className="text-lg md:text-xl lg:text-2xl font-bold tracking-tight">Crew & Production</h2></div>
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-1 h-5 md:h-8 bg-[#E50914] rounded-full" />
+                    <h2 className="text-lg md:text-xl lg:text-2xl font-bold tracking-tight">Crew & Production</h2>
+                  </div>
                   <HorizontalScroller>
                     {filteredCrew.map((person, idx) => (
-                      <Link href={`/person/${person.id}`} key={`${person.id}-${idx}`} className="group flex flex-col w-28 sm:w-32 md:w-36 shrink-0 bg-gradient-to-b from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] overflow-hidden hover:border-[#E50914]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                      <Link 
+                        href={getRoleHref(person)} 
+                        key={`${person.id}-${idx}`} 
+                        className="group flex flex-col w-28 sm:w-32 md:w-36 shrink-0 bg-gradient-to-b from-[#0F0F1A] to-black rounded-xl border border-[#1F2937] overflow-hidden hover:border-[#E50914]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                      >
                         <div className="w-full aspect-[2/3] relative bg-gradient-to-br from-[#1F2937] to-[#0F0F1A] overflow-hidden">
-                          {person.profile_path ? (<Image src={`https://image.tmdb.org/t/p/w185${person.profile_path}`} alt={person.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />) : (<div className="w-full h-full flex items-center justify-center"><svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>)}
+                          {person.profile_path ? (
+                            <Image 
+                              src={`https://image.tmdb.org/t/p/w185${person.profile_path}`} 
+                              alt={person.name} 
+                              fill 
+                              className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                              referrerPolicy="no-referrer" 
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                              </svg>
+                            </div>
+                          )}
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                         <div className="p-2 md:p-3 text-center">

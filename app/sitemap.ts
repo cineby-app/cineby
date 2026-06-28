@@ -10,6 +10,7 @@ import {
   getGenres 
 } from '@/lib/tmdb';
 import { articles } from '@/lib/articles';
+import { movieLists } from '@/lib/lists';
 
 // دالة لتنظيف تصنيفات الأنواع والكلمات المفتاحية والأسماء
 function generalSlugify(text: string): string {
@@ -41,6 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/library`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/match`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/list`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
   ] as MetadataRoute.Sitemap;
   finalRoutes.push(...staticRoutes);
 
@@ -56,7 +58,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   finalRoutes.push(...blogRoutes);
 
   // ==========================================
-  // 3. Genre routes (التصنيفات)
+  // 3. List routes (قوائم الأفلام والمسلسلات)
+  // ==========================================
+  try {
+    const listRoutes = movieLists.map((list) => ({
+      url: `${baseUrl}/list/${list.slug}`,
+      // ✅ FIX: Use current date since updatedAt/createdAt don't exist
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    })) as MetadataRoute.Sitemap;
+    finalRoutes.push(...listRoutes);
+  } catch (err) {
+    console.error('Failed to fetch lists for sitemap:', err);
+  }
+
+  // ==========================================
+  // 4. Genre routes (التصنيفات)
   // ==========================================
   try {
     const genres = await getGenres();
@@ -72,7 +90,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 4. Movie routes (الأفلام: التريند + الشعبية + القادمة والأعلى تقييماً)
+  // 5. Movie routes (الأفلام: التريند + الشعبية + القادمة والأعلى تقييماً)
   // ==========================================
   try {
     const [trending, infinite] = await Promise.all([
@@ -84,16 +102,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     allMovies.forEach((movie) => {
       if (movie && movie.id) {
-        // توليد اسم ملطف نقي من الحقول المدعومة في واجهة Movie بملفك tmdb.ts
         const safeTitle = (movie.title || movie.original_title || '')
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)+/g, '');
 
-        // حماية ثنائية: تمنع تكرار الـ ID وتمنع تكرار الـ Name Slug نهائياً
         if (!addedMovieIds.has(movie.id) && safeTitle && !addedMovieSlugs.has(safeTitle)) {
           addedMovieIds.add(movie.id);
-          addedMovieSlugs.add(safeTitle); // تسجيل الاسم لمنع تكراره بـ ID آخر
+          addedMovieSlugs.add(safeTitle);
 
           finalRoutes.push({
             url: `${baseUrl}/${safeTitle}-${movie.id}`,
@@ -109,7 +125,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 5. TV Show routes (المسلسلات: التريند + الشعبية + الأعلى تقييماً)
+  // 6. TV Show routes (المسلسلات: التريند + الشعبية + الأعلى تقييماً)
   // ==========================================
   try {
     const [trendingTV, infiniteTV, popularTV, topRatedTV] = await Promise.all([
@@ -123,16 +139,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     allTVShows.forEach((tv) => {
       if (tv && tv.id) {
-        // توليد اسم ملطف نقي للمسلسل (باستخدام الحقول المتطابقة مع النوع Movie لضمان سلامة الـ Typescript والـ Build)
         const safeName = (tv.title || tv.original_title || '')
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)+/g, '');
 
-        // حماية ثنائية للمسلسلات: تمنع تكرار الـ ID وتمنع تكرار الـ Name Slug نهائياً (حل مشكلتك بدقة)
         if (!addedTVIds.has(tv.id) && safeName && !addedTVSlugs.has(safeName)) {
           addedTVIds.add(tv.id);
-          addedTVSlugs.add(safeName); // تسجيل اسم المسلسل لمنع تكراره بمعرف آخر في بقية النتائج
+          addedTVSlugs.add(safeName);
 
           finalRoutes.push({
             url: `${baseUrl}/tv/${safeName}-${tv.id}`,
@@ -148,7 +162,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 6. Keyword routes (الكلمات المفتاحية)
+  // 7. Keyword routes (الكلمات المفتاحية)
   // ==========================================
   const popularKeywords = [
     { name: 'Action', id: 1 }, { name: 'Comedy', id: 2 }, { name: 'Drama', id: 3 },

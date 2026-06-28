@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const person = await fetchPersonDetails(id);
   if (!person) return {};
 
-  const name = person.name || "Composer";
-  const role = "Music Composer / Sound Designer";
+  const name = person.name || "Editor";
+  const role = "Editor";
   
   // ✅ FIX: Fetch credits for SEO instead of using non-existent properties
   let knownFor = "";
@@ -39,22 +39,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Generate description
   const description = person.biography 
     ? person.biography.substring(0, 160) 
-    : `Discover the music and sound work of ${name}. Explore the complete filmography, biography, and latest projects of composer ${name} on Cineby.`;
+    : `Watch all movies and TV shows edited by ${name}. Discover the complete filmography, biography, and latest projects of editor ${name} on Cineby.`;
   
   // Generate keywords
   const keywords = [
     name,
-    `${name} music`,
-    `${name} composer`,
-    `${name} sound design`,
+    `${name} movies`,
+    `${name} TV shows`,
+    `${name} editor`,
     `${name} filmography`,
     `${name} biography`,
     ...(knownFor ? knownFor.split(", ") : []),
     ...(recentCredits ? recentCredits.split(", ") : []),
-    "composer",
-    "sound",
-    "music",
-    "soundtrack",
+    "editor",
+    "editing",
     "movies",
     "TV shows",
     "filmography",
@@ -68,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     : "https://cineby.vip/img/og-image.jpg";
 
   return {
-    title: `${name} - Music Composer & Sound | Movies & TV Shows | Cineby`,
+    title: `${name} - Editor | Movies & TV Shows | Cineby`,
     description: description,
     keywords: keywords,
     authors: [{ name: "Cineby" }],
@@ -85,12 +83,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
     },
     alternates: {
-      canonical: `https://cineby.vip/sound/${slug}`,
+      canonical: `https://cineby.vip/editor/${slug}`,
     },
     openGraph: {
-      title: `${name} - Music Composer & Sound | Movies & TV Shows | Cineby`,
+      title: `${name} - Editor | Movies & TV Shows | Cineby`,
       description: description,
-      url: `https://cineby.vip/sound/${slug}`,
+      url: `https://cineby.vip/editor/${slug}`,
       siteName: "Cineby",
       type: "profile",
       images: [
@@ -98,14 +96,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
           url: image,
           width: 780,
           height: 780,
-          alt: `${name} - Composer profile photo`,
+          alt: `${name} - Editor profile photo`,
         },
       ],
       locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${name} - Music Composer & Sound | Movies & TV Shows | Cineby`,
+      title: `${name} - Editor | Movies & TV Shows | Cineby`,
       description: description,
       images: [image],
       site: "@cineby",
@@ -119,8 +117,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-// ========== MAIN SOUND PAGE ==========
-export default async function SoundPage({ params }: { params: Promise<{ slug: string }> }) {
+// ========== MAIN EDITOR PAGE ==========
+export default async function EditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const id = slug.split("-").pop();
   if (!id) return notFound();
@@ -130,7 +128,7 @@ export default async function SoundPage({ params }: { params: Promise<{ slug: st
 
   // ❌ REMOVED: Department validation that caused 404s for multi-role people
   // const department = person.known_for_department?.toLowerCase();
-  // if (department !== "sound") return notFound();
+  // if (department !== "editing") return notFound();
 
   return <PersonDetail />;
 }

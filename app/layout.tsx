@@ -3,9 +3,7 @@ import { Inter, Montserrat, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-// 1. Import Next.js optimized Script component
-import Script from "next/script"; 
-
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +23,6 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-// Global Viewport Settings Configuration
 export const viewport: Viewport = {
   themeColor: "#b50000",
   width: "device-width",
@@ -35,41 +32,57 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-// Advanced SEO Metadata Object Export
+// =============================================
+// 🎯 UPDATED: "HD" → "Full HD" in all metadata
+// =============================================
 export const metadata: Metadata = {
   metadataBase: new URL("https://cineby.vip"),
+  
+  // ✅ UPDATED: "Full HD" instead of "HD"
   title: {
-    default: "Cineby | Watch Free Movies & TV Shows Online in HD",
+    default: "Cineby - Watch Free Movies & Popular TV Shows Full HD",
     template: "%s | Cineby",
   },
-  description: "Stream latest movies, trending TV series, and entertainment online free in ultra HD quality. No subscription, no sign-up required. Start streaming on Cineby now!",
+  
+  // ✅ UPDATED: "Full HD" in description
+  description: "Cineby is the best free streaming platform. Watch Cineby movies, popular TV shows, and 123movies in stunning Full HD quality. No sign-up required. Start streaming on Cineby now!",
+  
+  // ✅ UPDATED: Keywords include both "Full HD" and "HD"
   keywords: [
-    "cineby",
-    "movies",
-    "cinema",
-    "series",
-    "music",
-    "watch free movies",
-    "stream tv shows online",
-    "free movie streaming site",
-    "watch series online free",
-    "hd movies online",
-    "no sign up movie streaming",
-    "cineby free stream",
-    "best streaming guide",
-    "latest movies online",
-    "cineby tv",
-    "cineby vip"
+    // PRIMARY FOCUS
+    "Cineby",
+    "Cineby movies",
+    "Cineby tv",
+    
+    // SECONDARY
+    "popular TV shows",
+    "123 movies",
+    "Full HD movies",
+    "Cineby sc",
+    
+    // TERTIARY
+    "watch movies 123movies",
+    "123movies watch movies online free",
+    "moviebox watch",
+    
+    // Supporting (including "HD" for SEO)
+    "free movies Full HD",
+    "watch TV shows Full HD",
+    "HD streaming",
+    "free entertainment"
   ],
+  
   alternates: {
-    canonical: "./",
+    canonical: "https://cineby.vip",
     languages: {
       "en-US": "https://cineby.vip",
     },
   },
+  
   authors: [{ name: "Cineby Team" }],
   creator: "Cineby",
   publisher: "Cineby",
+  
   robots: {
     index: true,
     follow: true,
@@ -81,30 +94,35 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  
+  // ✅ UPDATED: "Full HD" in Open Graph
   openGraph: {
-    title: "Cineby | Watch Free Movies & TV Shows Online in HD",
-    description: "Stream latest movies and trending TV series free in ultra HD quality. No registration, no ads limit. Watch Cineby now!",
+    title: "Cineby - Watch Free Movies & Popular TV Shows Full HD",
+    description: "Cineby is the best free streaming site. Watch Cineby movies, popular TV shows, and 123movies in Full HD. No registration required.",
     url: "https://cineby.vip",
     siteName: "Cineby",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/img/logo.png",
+        url: "/img/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Cineby - Your Entertainment Destination",
+        alt: "Cineby - Watch Free Movies & Popular TV Shows Full HD",
       },
     ],
   },
+  
+  // ✅ UPDATED: "Full HD" in Twitter
   twitter: {
     card: "summary_large_image",
-    title: "Cineby - Watch Free Movies & TV Shows Online in HD",
-    description: "Stream latest movies and trending TV series free in ultra HD quality. No registration, no ads limit. Watch Cineby now!",
-    images: ["/img/logo.png"],
+    title: "Cineby - Watch Free Movies & Popular TV Shows Full HD",
+    description: "Cineby is the best platform for free movies and TV shows. Watch Cineby movies, popular TV shows, and 123movies in Full HD. No sign-up!",
+    images: ["/img/og-image.jpg"],
     creator: "@cineby",
     site: "@cineby",
   },
+  
   icons: {
     icon: [
       { url: "/img/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -137,13 +155,15 @@ export const metadata: Metadata = {
       { rel: "shortcut icon", url: "/img/favicons/favicon.ico" },
     ],
   },
+  
   manifest: "/img/favicons/site.webmanifest",
   verification: {
     google: "your-google-verification-code",
   },
+  
   category: "entertainment",
   appleWebApp: {
-    title: "Cineby",
+    title: "Cineby - Full HD Movies & TV",
     statusBarStyle: "black-translucent",
     capable: true,
   },
@@ -165,9 +185,10 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Cineby",
+    name: "Cineby - Free Movies & Popular TV Shows Full HD",
+    alternateName: "Cineby Movies | Best Full HD Streaming Site",
     url: "https://cineby.vip",
-    description: "Stream latest movies and trending TV series free in ultra HD quality. No registration, no ads limit. Watch Cineby now!",
+    description: "Cineby is the best free streaming platform. Watch Cineby movies, popular TV shows, and 123movies in stunning Full HD quality.",
     potentialAction: {
       "@type": "SearchAction",
       "target": {
@@ -195,13 +216,17 @@ export default function RootLayout({
   const organizationLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Cineby",
+    name: "Cineby - Free Full HD Movies & TV Shows",
+    alternateName: "Cineby Movies",
     url: "https://cineby.vip",
     logo: "https://cineby.vip/img/logo.png",
+    description: "Cineby is the best free streaming platform for movies and popular TV shows in Full HD.",
     sameAs: [
       "https://twitter.com/cineby",
       "https://instagram.com/cineby",
-      "https://facebook.com/cineby"
+      "https://facebook.com/cineby",
+      "https://tiktok.com/@cineby",
+      "https://youtube.com/cineby"
     ],
     contactPoint: {
       "@type": "ContactPoint",
@@ -214,26 +239,25 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable} ${dmSans.variable}`}>
       <head>
-        {/* Network Prefetch Optimization triggers */}
         <link rel="preconnect" href="https://image.tmdb.org" />
         <link rel="preconnect" href="https://api.themoviedb.org" />
         <link rel="dns-prefetch" href="https://image.tmdb.org" />
         <link rel="dns-prefetch" href="https://api.themoviedb.org" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         
-        {/* Discovery Feeds */}
         <link rel="alternate" type="application/rss+xml" title="Cineby RSS Feed" href="/feed.xml" />
+        <link rel="preload" as="image" href="/img/logo.png" fetchPriority="high" />
         
-        {/* Preload High-Priority Layout Assets */}
-        <link rel="preload" as="image" href="/img/logo.png" />
-        
-        {/* Legacy MS App Definitions */}
         <meta name="msapplication-TileColor" content="#b50000" />
         <meta name="msapplication-TileImage" content="/img/favicons/mstile-144x144.png" />
         <meta name="msapplication-config" content="/img/favicons/browserconfig.xml" />
+        
+        <meta httpEquiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload" />
+        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+        <meta httpEquiv="X-Frame-Options" content="DENY" />
       </head>
       <body className="font-sans antialiased bg-[#05050A] text-white">
         
-        {/* 2. OPTIMIZED GOOGLE ANALYTICS INTEGRATION USING next/script */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-T9664BYK5Y"
           strategy="afterInteractive"
@@ -247,7 +271,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google Structured Schemas injection blocks */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -257,7 +280,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
         />
         
-        {/* Screen Reader Accessibility Skip Link anchor */}
         <a 
           href="#main-content" 
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[250] focus:px-4 focus:py-2 focus:bg-[#b50000] focus:text-white focus:rounded-lg focus:font-bold"

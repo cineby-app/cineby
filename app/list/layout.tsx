@@ -10,55 +10,55 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-// Enhanced SEO Metadata optimized for Entertainment & Film Blogs
+// Enhanced SEO Metadata optimized for Movie & TV Show Lists
 export const metadata: Metadata = {
   title: {
-    default: "Cineby Blog | Expert Movie Reviews, Deep Dives & Streaming Guides",
-    template: "%s | Cineby Blog",
+    default: "Cineby Lists | Curated Movie & TV Show Collections",
+    template: "%s | Cineby Lists",
   },
-  description: "Dive into depth with expert film reviews, series breakdowns, breaking entertainment news, and structural deep dives into modern cinema culture. Your ultimate guide to what to watch next.",
+  description: "Explore expertly curated movie and TV show lists on Cineby. From mind-bending thrillers to heartwarming dramas, discover your next favorite film or series collection.",
   keywords: [
-    "movie reviews",
-    "film critiques",
-    "series recommendations",
-    "cinema updates",
-    "streaming recommendations",
-    "what to watch next",
-    "directors deep dives",
-    "behind the scenes",
-    "cineby articles",
-    "best movies to watch",
-    "tv show reviews",
-    "film analysis",
-    "cinema culture",
-    "entertainment news",
-    "movie guides"
+    "movie lists",
+    "TV show lists",
+    "curated collections",
+    "Cineby lists",
+    "best films",
+    "movie recommendations",
+    "TV series collections",
+    "movie collections",
+    "curated movie lists",
+    "must-watch movies",
+    "film collections",
+    "streaming guides",
+    "movie categories",
+    "TV show recommendations",
+    "cinematic collections"
   ],
   alternates: {
-    canonical: "https://cineby.vip/blog",
+    canonical: "https://cineby.vip/list",
   },
   openGraph: {
-    title: "Cineby Blog | Ultimate Insights for Cinema Lovers",
-    description: "Read expert film analysis, recommendations, and breaking news updates from our passionate entertainment editorial crew. Discover your next favorite movie or series.",
-    url: "https://cineby.vip/blog",
-    siteName: "Cineby Blog",
+    title: "Cineby Lists | Curated Movie & TV Show Collections",
+    description: "Explore expertly curated movie and TV show collections. Find your next favorite film or series with our handpicked lists.",
+    url: "https://cineby.vip/list",
+    siteName: "Cineby Lists",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/img/blog-og-image.jpg",
+        url: "/img/lists-og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Cineby Blog - Entertainment Deep Dives",
+        alt: "Cineby Lists - Curated Movie & TV Show Collections",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cineby Blog | Ultimate Insights for Cinema Lovers",
-    description: "Read expert film analysis, recommendations, and breaking news updates from our passionate entertainment editorial crew.",
-    images: ["/img/blog-og-image.jpg"],
+    title: "Cineby Lists | Curated Movie & TV Show Collections",
+    description: "Explore expertly curated movie and TV show collections. Find your next favorite film or series.",
+    images: ["/img/lists-og-image.jpg"],
     creator: "@cineby",
     site: "@cineby",
   },
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     google: "your-google-verification-code", // Add your Google Search Console verification code
   },
   category: "entertainment",
-  classification: "Movie Reviews, Film Analysis, Entertainment News",
+  classification: "Movie Lists, TV Show Collections, Curated Entertainment",
   authors: [{ name: "Cineby Editorial Team" }],
   creator: "Cineby",
   publisher: "Cineby",
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Breadcrumb structured data for the blog index
+// Breadcrumb structured data for the lists index
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -102,24 +102,24 @@ const breadcrumbJsonLd = {
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Blog",
-      "item": "https://cineby.vip/blog"
+      "name": "Lists",
+      "item": "https://cineby.vip/list"
     }
   ]
 };
 
-// Blog Schema with detailed organization and site navigation
-const blogSeriesJsonLd = {
+// Lists Schema with detailed organization and site navigation
+const listsSeriesJsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "https://cineby.vip/blog",
-  "name": "Cineby Blog",
-  "url": "https://cineby.vip/blog",
-  "description": "Expert film reviews, television series breakdowns, breaking entertainment news, and structural deep dives into modern cinema culture. Your ultimate destination for cinematic insights.",
+  "@id": "https://cineby.vip/list",
+  "name": "Cineby Lists",
+  "url": "https://cineby.vip/list",
+  "description": "Expertly curated movie and TV show collections. Discover handpicked lists of the best films, series, and cinematic experiences.",
   "about": {
     "@type": "Thing",
-    "name": "Movie and TV Show Reviews",
-    "description": "Comprehensive reviews, analysis, and recommendations for movies and TV shows"
+    "name": "Movie and TV Show Collections",
+    "description": "Curated collections of the best movies and TV shows across all genres and eras"
   },
   "mainEntity": {
     "@type": "ItemList",
@@ -152,7 +152,13 @@ const blogSeriesJsonLd = {
   "reviewedBy": {
     "@type": "Organization",
     "name": "Cineby Editorial Team"
-  }
+  },
+  "significantLink": "https://cineby.vip/list",
+  "significantLinks": [
+    "https://cineby.vip",
+    "https://cineby.vip/blog",
+    "https://cineby.vip/library"
+  ]
 };
 
 // Website schema for better indexing
@@ -177,11 +183,20 @@ const websiteJsonLd = {
   }
 };
 
-export default function BlogLayout({
+// List Item Schema - Will be populated dynamically
+const listItemJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Cineby Movie and TV Show Lists",
+  "description": "Curated collections of the best entertainment content",
+  "itemListElement": []
+};
+
+export default function ListLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <>
       {/* JSON-LD Structured Data - All scripts combined for better performance */}
@@ -193,9 +208,9 @@ export default function BlogLayout({
       />
       
       <Script
-        id="blog-schema"
+        id="lists-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSeriesJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(listsSeriesJsonLd) }}
         strategy="afterInteractive"
       />
       
@@ -206,21 +221,22 @@ export default function BlogLayout({
         strategy="afterInteractive"
       />
 
-      {/* Article List Schema - Will be populated dynamically by the page */}
-      {/* This allows Google to understand the list of articles */}
+      <Script
+        id="list-item-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(listItemJsonLd) }}
+        strategy="afterInteractive"
+      />
 
       {/* Sitemap hint for search engines */}
       <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-      
-      {/* RSS Feed for blog subscribers */}
-      <link rel="alternate" type="application/rss+xml" title="Cineby Blog RSS Feed" href="/blog/feed.xml" />
       
       {/* Preconnect to external resources for faster loading */}
       <link rel="preconnect" href="https://image.tmdb.org" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://image.tmdb.org" />
       
       {/* Section Content Rendering Target Layer */}
-      <div>
+      <div className="min-h-screen bg-[#05050A]">
         {children}
       </div>
     </>

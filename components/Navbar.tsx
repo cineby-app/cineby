@@ -3,15 +3,17 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Menu, X, Home, Compass, BookOpen, Film, Search } from 'lucide-react';
+import { Menu, X, Home, Compass, BookOpen, Film, Search, ListVideo } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
+import Loading from '@/app/loading'; // Import your custom Loading component
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false); // New state for loading
   const searchInputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -28,6 +30,7 @@ export function Navbar() {
     setIsOpen(false);
     setIsSearchModalOpen(false);
     setSearchQuery('');
+    setIsSearching(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -41,6 +44,7 @@ export function Navbar() {
       if (e.key === 'Escape' && isSearchModalOpen) {
         setIsSearchModalOpen(false);
         setSearchQuery('');
+        setIsSearching(false);
       }
     };
     document.addEventListener('keydown', handleEsc);
@@ -50,10 +54,16 @@ export function Navbar() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
+      // Show loading animation
+      setIsSearching(true);
       setIsSearchModalOpen(false);
-      setSearchQuery('');
-      setIsOpen(false);
+      
+      // Navigate after a small delay to show loading
+      setTimeout(() => {
+        router.push(`/search/${encodeURIComponent(searchQuery.trim())}`);
+        setSearchQuery('');
+        setIsSearching(false);
+      }, 800); // Adjust timing as needed
     }
   };
 
@@ -61,14 +71,21 @@ export function Navbar() {
   const closeSearchModal = () => {
     setIsSearchModalOpen(false);
     setSearchQuery('');
+    setIsSearching(false);
   };
 
   const navLinks = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Match', href: '/match', icon: Compass },
+    { name: 'Lists', href: '/list', icon: ListVideo },
     { name: 'Library', href: '/library', icon: Film },
     { name: 'Blog', href: '/blog', icon: BookOpen },
   ];
+
+  // Show loading while searching
+  if (isSearching) {
+    return <Loading />;
+  }
 
   return (
     <>
