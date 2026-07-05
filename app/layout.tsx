@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   
   // ✅ UPDATED: "Full HD" in description
-  description: "Cineby is the best free streaming platform. Watch Cineby movies, popular TV shows, and 123movies in stunning Full HD quality. No sign-up required. Start streaming on Cineby now!",
+  description: "Cineby is a free streaming platform to watch movies and TV shows in Full HD. Stream the latest Cineby content online with no sign-up required.",
   
   // ✅ UPDATED: Keywords include both "Full HD" and "HD"
   keywords: [
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
   // ✅ UPDATED: "Full HD" in Open Graph
   openGraph: {
     title: "Cineby - Watch Free Movies & Popular TV Shows Full HD",
-    description: "Cineby is the best free streaming site. Watch Cineby movies, popular TV shows, and 123movies in Full HD. No registration required.",
+    description: "Cineby is a free streaming platform to watch movies and TV shows in Full HD. Stream the latest Cineby content online with no sign-up required.",
     url: "https://cineby.vip",
     siteName: "Cineby",
     locale: "en_US",
@@ -189,7 +189,7 @@ export default function RootLayout({
     name: "Cineby - Free Movies & Popular TV Shows Full HD",
     alternateName: "Cineby Movies | Best Full HD Streaming Site",
     url: "https://cineby.vip",
-    description: "Cineby is the best free streaming platform. Watch Cineby movies, popular TV shows, and 123movies in stunning Full HD quality.",
+    description: "Cineby is a free streaming platform to watch movies and TV shows in Full HD. Stream the latest Cineby content online with no sign-up required.",
     potentialAction: {
       "@type": "SearchAction",
       "target": {
