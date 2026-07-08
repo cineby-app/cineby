@@ -836,7 +836,7 @@ export default function Home() {
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full min-h-[100vh] px-6 text-center">
           <div className="max-w-5xl mx-auto">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-white uppercase drop-shadow-2xl mb-4 md:mb-6">
-              Built For Cinema <br /> 
+              Cineby For Cinema <br /> 
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b50000] to-[#b50000]">
                 Lovers.
               </span>
