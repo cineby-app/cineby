@@ -1,0 +1,8 @@
+{
+  "name": "WhatToWatch",
+  "description": "A highly immersive, premium single-page movie discovery web application.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
