@@ -20,14 +20,14 @@ interface ContentLockerProps {
   movieId: number | string;
   movieTitle: string;
   backdrop?: string;
-  /** ✅ NEW: "movie" or "tv" */
   mediaType?: "movie" | "tv";
-  /** ✅ NEW: full slug for movies, e.g. "fight-club-550" */
   slug?: string;
-  /** ✅ NEW: season number (TV only) */
   season?: number;
-  /** ✅ NEW: episode number (TV only) */
   episode?: number;
+  /** ✅ NEW: force a specific target URL (used for TV episodes) */
+  overrideUrl?: string;
+  /** ✅ NEW: pass a custom trigger element (used for episode cards) */
+  customTrigger?: React.ReactNode;
 }
 
 function fetchJSONP(url: string): Promise<any> {
@@ -36,19 +36,19 @@ function fetchJSONP(url: string): Promise<any> {
     const script = document.createElement('script');
     const separator = url.indexOf('?') !== -1 ? '&' : '?';
     script.src = `${url}${separator}callback=${callbackName}`;
-    
+
     (window as any)[callbackName] = (data: any) => {
       resolve(data);
       delete (window as any)[callbackName];
       document.body.removeChild(script);
     };
-    
+
     script.onerror = () => {
       reject(new Error('JSONP fetch failed'));
       delete (window as any)[callbackName];
       document.body.removeChild(script);
     };
-    
+
     document.body.appendChild(script);
   });
 }
@@ -57,10 +57,12 @@ export function ContentLocker({
   movieId,
   movieTitle,
   backdrop,
-  mediaType = "movie",   // ✅ default = movie
-  slug,                  // ✅ new
-  season,                // ✅ new
-  episode,               // ✅ new
+  mediaType = "movie",
+  slug,
+  season,
+  episode,
+  overrideUrl,
+  customTrigger,
 }: ContentLockerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -68,7 +70,7 @@ export function ContentLocker({
   const [isVerifying, setIsVerifying] = useState(false);
   const [countdown, setCountdown] = useState(900);
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -81,7 +83,7 @@ export function ContentLocker({
 
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      
+
       const fetchOffers = async () => {
         try {
           const data = await fetchJSONP(
@@ -100,10 +102,10 @@ export function ContentLocker({
       if (offers.length === 0) {
         fetchOffers();
       } else {
-        setTimeout(() => { if(isMounted) setIsLoadingOffers(false) }, 0);
+        setTimeout(() => { if (isMounted) setIsLoadingOffers(false) }, 0);
       }
-      
-      setTimeout(() => { if(isMounted) setCountdown(900) }, 0);
+
+      setTimeout(() => { if (isMounted) setCountdown(900) }, 0);
       timerRef.current = setInterval(() => {
         setCountdown((c) => (c > 0 ? c - 1 : 0));
       }, 1000);
@@ -112,7 +114,7 @@ export function ContentLocker({
       if (timerRef.current) clearInterval(timerRef.current);
       if (checkRef.current) clearInterval(checkRef.current);
     }
-    
+
     return () => {
       isMounted = false;
       document.body.style.overflow = 'unset';
@@ -121,15 +123,15 @@ export function ContentLocker({
     };
   }, [isOpen, offers.length]);
 
-  /** ✅ NEW: build the correct target URL based on media type */
+  /** Build the target URL based on media type */
   const buildTargetUrl = (): string => {
+    if (overrideUrl) return overrideUrl;
+
     if (mediaType === "tv") {
-      // TV: https://movieplex.online/watch/tv/{tvId}/{season}/{episode}
       const s = season ?? 1;
       const e = episode ?? 1;
       return `https://movieplex.online/watch/tv/${movieId}/${s}/${e}`;
     }
-    // Movie: https://cineby.at/{slug}?play=true
     const movieSlug = slug || `${movieId}`;
     return `https://cineby.at/${movieSlug}?play=true`;
   };
@@ -141,7 +143,6 @@ export function ContentLocker({
       );
       if (leads && leads.length > 0) {
         if (checkRef.current) clearInterval(checkRef.current);
-        // ✅ FIXED: redirect to correct URL based on media type
         window.location.assign(buildTargetUrl());
       }
     } catch (e) {
@@ -152,7 +153,7 @@ export function ContentLocker({
   const startVerification = (url: string) => {
     setIsVerifying(true);
     window.open(url, '_blank');
-    
+
     if (!checkRef.current) {
       checkRef.current = setInterval(checkLeads, 15000);
     }
@@ -166,23 +167,36 @@ export function ContentLocker({
 
   return (
     <>
-      <button
-        onClick={() => {
-          setIsOpen(true);
-          if (offers.length === 0) setIsLoadingOffers(true);
-        }}
-        className="flex items-center gap-3 px-8 py-4 rounded-full font-black uppercase tracking-widest text-sm transition-all shadow-xl bg-[#b50000] text-white hover:bg-red-600 hover:scale-105 active:scale-95"
-      >
-        <Play className="w-5 h-5 fill-current" />
-        Watch Now
-      </button>
+      {/* Custom trigger OR default Watch Now button */}
+      {customTrigger ? (
+        <div
+          onClick={() => {
+            setIsOpen(true);
+            if (offers.length === 0) setIsLoadingOffers(true);
+          }}
+          className="contents"
+        >
+          {customTrigger}
+        </div>
+      ) : (
+        <button
+          onClick={() => {
+            setIsOpen(true);
+            if (offers.length === 0) setIsLoadingOffers(true);
+          }}
+          className="flex items-center gap-3 px-8 py-4 rounded-full font-black uppercase tracking-widest text-sm transition-all shadow-xl bg-[#b50000] text-white hover:bg-red-600 hover:scale-105 active:scale-95"
+        >
+          <Play className="w-5 h-5 fill-current" />
+          Watch Now
+        </button>
+      )}
 
       {mounted && isOpen && createPortal(
         <div className="fixed inset-0 z-[9999999] flex items-center justify-center p-4 sm:p-6 shadow-2xl">
           <div className="absolute inset-0 backdrop-blur-md" />
-          
+
           <div className="relative w-full max-w-2xl max-h-[95vh] flex flex-col bg-[#05050A] border border-[#1F2937] rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up">
-            
+
             {/* Header / Backdrop */}
             <div className="relative h-44 sm:h-56 w-full bg-[#1F2937] shrink-0">
               {backdrop ? (
@@ -194,12 +208,12 @@ export function ContentLocker({
                 />
               ) : null}
               <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] to-transparent" />
-              
+
               <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2 text-xs font-mono font-bold text-red-500 animate-pulse uppercase tracking-wider">
                 <div className="w-2 h-2 bg-red-500 rounded-full" />
                 Valid for {formatTime(countdown)}
               </div>
-              
+
               <div className="absolute bottom-6 left-6 pr-6">
                 <div className="inline-flex items-center gap-2 bg-[#E50914] text-white text-xs font-bold px-2 py-1 rounded mb-2 uppercase tracking-widest">
                   <Lock className="w-3 h-3" />
@@ -226,7 +240,7 @@ export function ContentLocker({
                   <p className="text-xs text-gray-500 font-mono tracking-widest uppercase text-center mb-6">
                     Select an Offer securely via Sponsor
                   </p>
-                  
+
                   <div className="grid grid-cols-1 gap-4">
                     {offers.map((offer, idx) => (
                       <button
@@ -274,7 +288,7 @@ export function ContentLocker({
               ) : (
                 <div className="text-center py-12">
                   <p className="text-gray-400 mb-4">No offers available in your region.</p>
-                  <button 
+                  <button
                     onClick={() => setIsOpen(false)}
                     className="text-white hover:text-[#E50914]"
                   >
@@ -289,14 +303,14 @@ export function ContentLocker({
               <p className="text-[10px] text-gray-600 font-mono tracking-widest uppercase">
                 Secure 256-bit Connection
               </p>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="text-xs text-gray-400 hover:text-white uppercase font-bold tracking-widest"
               >
                 Cancel
               </button>
             </div>
-            
+
           </div>
         </div>,
         document.body
