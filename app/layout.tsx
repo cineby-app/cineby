@@ -253,7 +253,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#b50000" />
         <meta name="msapplication-TileImage" content="/img/favicons/mstile-144x144.png" />
         <meta name="msapplication-config" content="/img/favicons/browserconfig.xml" />
-        
+        <meta name="google-site-verification" content="86PaWUTPeCVmhWE7nxbWIG9n771HqYb1qHn4EE-jlM4" />
         <meta httpEquiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload" />
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
         <meta httpEquiv="X-Frame-Options" content="DENY" />
