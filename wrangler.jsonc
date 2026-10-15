@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": ".open-next/worker.js",
-	"name": "ai-studio-applet",
+	"name": "cineby",
 	"compatibility_date": "2026-10-15",
 	"compatibility_flags": [
 		"nodejs_compat",
@@ -16,7 +16,27 @@
 			// Self-reference service binding, the service name must match the worker name
 			// see https://opennext.js.org/cloudflare/caching
 			"binding": "WORKER_SELF_REFERENCE",
-			"service": "ai-studio-applet"
+			"service": "cineby"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
+			"bucket_name": "ai-studio-applet-cache"
+		}
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "NEXT_CACHE_DO_QUEUE",
+				"class_name": "DOQueueHandler"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["DOQueueHandler"]
 		}
 	],
 	"images": {
