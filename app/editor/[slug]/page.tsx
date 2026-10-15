@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Generate image URL for social sharing
   const image = person.profile_path 
     ? `https://image.tmdb.org/t/p/original${person.profile_path}`
-    : "https://cineby.vip/img/og-image.jpg";
+    : "https://play.cineby.vip/img/og-image.jpg";
 
   return {
     title: `${name} - Editor | Movies & TV Shows | Cineby`,
@@ -83,12 +83,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
     },
     alternates: {
-      canonical: `https://cineby.vip/editor/${slug}`,
+      canonical: `https://play.cineby.vip/editor/${slug}`,
     },
     openGraph: {
       title: `${name} - Editor | Movies & TV Shows | Cineby`,
       description: description,
-      url: `https://cineby.vip/editor/${slug}`,
+      url: `https://play.cineby.vip/editor/${slug}`,
       siteName: "Cineby",
       type: "profile",
       images: [

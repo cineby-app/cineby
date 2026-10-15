@@ -12,7 +12,7 @@ import { fetchMovieDetails, fetchTVDetails, fetchMovieVideos, fetchTVVideos } fr
 import { AdsterraAd } from '@/components/AdsterraAd';
 
 const AD_KEY_300x250 = '8162f7b8c34974f34a974b6e7ecfc56c';
-const BASE_URL = 'https://cineby.vip';
+const BASE_URL = 'https://play.cineby.vip';
 
 interface Props {
   params: Promise<{ slug: string }>;

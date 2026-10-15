@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'My Library | Cineby',
     description: 'Manage your watchlist, favorites, and recently watched movies. Your personal movie collection all in one place.',
-    url: 'https://cineby.vip/library',
+    url: 'https://play.cineby.vip/library',
     siteName: 'Cineby',
     locale: 'en_US',
     type: 'website',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     site: '@cineby',
   },
   alternates: {
-    canonical: 'https://cineby.vip/library',
+    canonical: 'https://play.cineby.vip/library',
   },
   // Private indexing rule configuration for personal client dashboards
   robots: {

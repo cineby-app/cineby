@@ -35,12 +35,12 @@ export const metadata: Metadata = {
     "cinematic collections"
   ],
   alternates: {
-    canonical: "https://cineby.vip/list",
+    canonical: "https://play.cineby.vip/list",
   },
   openGraph: {
     title: "Cineby Lists | Curated Movie & TV Show Collections",
     description: "Explore expertly curated movie and TV show collections. Find your next favorite film or series with our handpicked lists.",
-    url: "https://cineby.vip/list",
+    url: "https://play.cineby.vip/list",
     siteName: "Cineby Lists",
     locale: "en_US",
     type: "website",
@@ -97,13 +97,13 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://cineby.vip/"
+      "item": "https://play.cineby.vip/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Lists",
-      "item": "https://cineby.vip/list"
+      "item": "https://play.cineby.vip/list"
     }
   ]
 };
@@ -112,9 +112,9 @@ const breadcrumbJsonLd = {
 const listsSeriesJsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "https://cineby.vip/list",
+  "@id": "https://play.cineby.vip/list",
   "name": "Cineby Lists",
-  "url": "https://cineby.vip/list",
+  "url": "https://play.cineby.vip/list",
   "description": "Expertly curated movie and TV show collections. Discover handpicked lists of the best films, series, and cinematic experiences.",
   "about": {
     "@type": "Thing",
@@ -128,10 +128,10 @@ const listsSeriesJsonLd = {
   "publisher": {
     "@type": "Organization",
     "name": "Cineby",
-    "url": "https://cineby.vip",
+    "url": "https://play.cineby.vip",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://cineby.vip/img/logo.png",
+      "url": "https://play.cineby.vip/img/logo.png",
       "width": 200,
       "height": 60
     },
@@ -153,11 +153,11 @@ const listsSeriesJsonLd = {
     "@type": "Organization",
     "name": "Cineby Editorial Team"
   },
-  "significantLink": "https://cineby.vip/list",
+  "significantLink": "https://play.cineby.vip/list",
   "significantLinks": [
-    "https://cineby.vip",
-    "https://cineby.vip/blog",
-    "https://cineby.vip/library"
+    "https://play.cineby.vip",
+    "https://play.cineby.vip/blog",
+    "https://play.cineby.vip/library"
   ]
 };
 
@@ -165,8 +165,8 @@ const listsSeriesJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://cineby.vip/#website",
-  "url": "https://cineby.vip",
+  "@id": "https://play.cineby.vip/#website",
+  "url": "https://play.cineby.vip",
   "name": "Cineby",
   "description": "Watch free movies and popular TV shows in Full HD. Expert reviews, curated lists, and streaming guides.",
   "publisher": {
@@ -177,7 +177,7 @@ const websiteJsonLd = {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://cineby.vip/search/{search_term_string}"
+      "urlTemplate": "https://play.cineby.vip/search/{search_term_string}"
     },
     "query-input": "required name=search_term_string"
   }

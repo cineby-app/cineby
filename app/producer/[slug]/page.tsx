@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Generate image URL for social sharing
   const image = person.profile_path 
     ? `https://image.tmdb.org/t/p/original${person.profile_path}`
-    : "https://cineby.vip/img/og-image.jpg";
+    : "https://play.cineby.vip/img/og-image.jpg";
 
   return {
     title: `${name} - Producer | Movies & TV Shows | Cineby`,
@@ -82,12 +82,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
     },
     alternates: {
-      canonical: `https://cineby.vip/producer/${slug}`,
+      canonical: `https://play.cineby.vip/producer/${slug}`,
     },
     openGraph: {
       title: `${name} - Producer | Movies & TV Shows | Cineby`,
       description: description,
-      url: `https://cineby.vip/producer/${slug}`,
+      url: `https://play.cineby.vip/producer/${slug}`,
       siteName: "Cineby",
       type: "profile",
       images: [

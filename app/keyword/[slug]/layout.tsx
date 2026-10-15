@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: KeywordPageProps): Promise<Me
     openGraph: {
       title,
       description,
-      url: `https://cineby.vip/keyword/${slug}`,
+      url: `https://play.cineby.vip/keyword/${slug}`,
       siteName: 'Cineby',
       locale: 'en_US',
       type: 'website',
@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: KeywordPageProps): Promise<Me
       site: '@cineby',
     },
     alternates: {
-      canonical: `https://cineby.vip/keyword/${slug}`,
+      canonical: `https://play.cineby.vip/keyword/${slug}`,
     },
     robots: {
       index: true,

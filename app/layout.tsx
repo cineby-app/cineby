@@ -37,7 +37,7 @@ export const viewport: Viewport = {
 // 🎯 UPDATED: "HD" → "Full HD" in all metadata
 // =============================================
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cineby.vip"),
+  metadataBase: new URL("https://play.cineby.vip"),
   
   // ✅ UPDATED: "Full HD" instead of "HD"
   title: {
@@ -74,10 +74,10 @@ export const metadata: Metadata = {
   ],
   
   alternates: {
-    canonical: "https://cineby.vip",
+    canonical: "https://play.cineby.vip",
     languages: {
-    'en-US': `https://cineby.vip`, // Tells Google to prioritize this for US searchers
-    'x-default': `https://cineby.vip`, // Fallback for everyone else
+    'en-US': `https://play.cineby.vip`, // Tells Google to prioritize this for US searchers
+    'x-default': `https://play.cineby.vip`, // Fallback for everyone else
   },
   },
   
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cineby - Watch Free Movies & Popular TV Shows Full HD",
     description: "Cineby is a free streaming platform to watch movies and TV shows in Full HD. Stream the latest Cineby content online with no sign-up required.",
-    url: "https://cineby.vip",
+    url: "https://play.cineby.vip",
     siteName: "Cineby",
     locale: "en_US",
     type: "website",
@@ -189,13 +189,13 @@ export default function RootLayout({
     "@type": "WebSite",
     name: "Cineby - Free Movies & Popular TV Shows Full HD",
     alternateName: "Cineby Movies | Best Full HD Streaming Site",
-    url: "https://cineby.vip",
+    url: "https://play.cineby.vip",
     description: "Cineby is a free streaming platform to watch movies and TV shows in Full HD. Stream the latest Cineby content online with no sign-up required.",
     potentialAction: {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://cineby.vip/search?q={search_term_string}"
+        "urlTemplate": "https://play.cineby.vip/search?q={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     },
@@ -211,7 +211,7 @@ export default function RootLayout({
     copyrightHolder: {
       "@type": "Organization",
       name: "Cineby",
-      url: "https://cineby.vip"
+      url: "https://play.cineby.vip"
     }
   };
 
@@ -220,8 +220,8 @@ export default function RootLayout({
     "@type": "Organization",
     name: "Cineby - Free Full HD Movies & TV Shows",
     alternateName: "Cineby Movies",
-    url: "https://cineby.vip",
-    logo: "https://cineby.vip/img/logo.png",
+    url: "https://play.cineby.vip",
+    logo: "https://play.cineby.vip/img/logo.png",
     description: "Cineby is the best free streaming platform for movies and popular TV shows in Full HD.",
     sameAs: [
       "https://twitter.com/cineby",

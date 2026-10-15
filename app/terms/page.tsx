@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   follow: true,
 },
   alternates: {
-    canonical: 'https://cineby.app/terms',
+    canonical: 'https://play.cineby.app/terms',
   },
 };
 

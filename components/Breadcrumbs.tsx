@@ -14,7 +14,7 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      item: item.href ? `https://Cineby.vip${item.href}` : null,
+      item: item.href ? `https://play.cineby.vip${item.href}` : null,
     })),
   };
 

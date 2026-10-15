@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     
     // Generate canonical URL with exact slug format
-    const canonicalUrl = `https://cineby.vip/tv/${tvSlug}`;
+    const canonicalUrl = `https://play.cineby.vip/tv/${tvSlug}`;
     
     // Rating for structured data
     const ratingValue = tvShow.vote_average || 0;
@@ -139,7 +139,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       // Other meta
       category: "entertainment",
       classification: "TV Series Database",
-      authors: [{ name: "Cineby", url: "https://cineby.vip" }],
+      authors: [{ name: "Cineby", url: "https://play.cineby.vip" }],
       creator: "Cineby",
       publisher: "Cineby",
       

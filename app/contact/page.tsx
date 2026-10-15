@@ -9,17 +9,17 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://cineby.vip/contact",
+    canonical: "https://play.cineby.vip/contact",
   },
   openGraph: {
     title: "Contact Us - Cineby",
     description: "Get in touch with the Cineby team. We'd love to hear from you!",
-    url: "https://cineby.vip/contact",
+    url: "https://play.cineby.vip/contact",
     siteName: "Cineby",
     type: "website",
     images: [
       {
-        url: "https://cineby.vip/img/og-image.jpg",
+        url: "https://play.cineby.vip/img/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Contact Cineby",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Contact Us - Cineby",
     description: "Get in touch with the Cineby team. We'd love to hear from you!",
-    images: ["https://cineby.vip/img/og-image.jpg"],
+    images: ["https://play.cineby.vip/img/og-image.jpg"],
     site: "@cineby",
     creator: "@cineby",
   },

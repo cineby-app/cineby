@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Movie Match | Find Your Perfect Movie Tonight',
     description: 'Answer 5-9 quick questions and let our intelligent algorithm find the perfect movie for your mood. Personalized recommendations in seconds.',
-    url: 'https://cineby.vip/match',
+    url: 'https://play.cineby.vip/match',
     siteName: 'Cineby',
     locale: 'en_US',
     type: 'website',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     site: '@cineby',
   },
   alternates: {
-    canonical: 'https://cineby.vip/match',
+    canonical: 'https://play.cineby.vip/match',
   },
   robots: {
     index: true,

@@ -35,16 +35,16 @@ export const metadata: Metadata = {
     "cineby blog"
   ],
   alternates: {
-    canonical: "https://cineby.vip/blog",
+    canonical: "https://play.cineby.vip/blog",
     languages: {
-    'en-US': `https://cineby.vip/blog`, // Tells Google to prioritize this for US searchers
-    'x-default': `https://cineby.vip/blog`, // Fallback for everyone else
+    'en-US': `https://play.cineby.vip/blog`, // Tells Google to prioritize this for US searchers
+    'x-default': `https://play.cineby.vip/blog`, // Fallback for everyone else
   },
   },
   openGraph: {
     title: "Movie Reviews & TV Show News",  // ✅ Changed to Cineby
     description: "Expert movie reviews, TV show breakdowns, and entertainment news. Find your next favorite film or series with our in-depth analysis.",
-    url: "https://cineby.vip/blog",
+    url: "https://play.cineby.vip/blog",
     siteName: "Cineby Blog",
     locale: "en_US",
     type: "website",
@@ -101,13 +101,13 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://cineby.vip/"
+      "item": "https://play.cineby.vip/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Blog",
-      "item": "https://cineby.vip/blog"
+      "item": "https://play.cineby.vip/blog"
     }
   ]
 };
@@ -116,9 +116,9 @@ const breadcrumbJsonLd = {
 const blogSeriesJsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "https://cineby.vip/blog",
+  "@id": "https://play.cineby.vip/blog",
   "name": "Cineby Blog - Movie Reviews & TV Show News",
-  "url": "https://cineby.vip/blog",
+  "url": "https://play.cineby.vip/blog",
   "description": "Read expert movie reviews, TV show breakdowns, and the latest entertainment news. Discover what to watch next with our in-depth film analysis and streaming guides.",
   "about": {
     "@type": "Thing",
@@ -132,7 +132,7 @@ const blogSeriesJsonLd = {
   "publisher": {
     "@type": "Organization",
     "name": "Cineby",
-    "url": "https://cineby.vip",
+    "url": "https://play.cineby.vip",
     "logo": {
       "@type": "ImageObject",
       "url": "/img/cover.webp",
@@ -163,8 +163,8 @@ const blogSeriesJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://cineby.vip/#website",
-  "url": "https://cineby.vip",
+  "@id": "https://play.cineby.vip/#website",
+  "url": "https://play.cineby.vip",
   "name": "Cineby - Movie Reviews & TV Show News",
   "description": "Expert movie reviews, TV show breakdowns, and entertainment news. Find your next favorite film or series.",
   "publisher": {
@@ -179,7 +179,7 @@ const websiteJsonLd = {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://cineby.vip/search/{search_term_string}"
+      "urlTemplate": "https://play.cineby.vip/search/{search_term_string}"
     },
     "query-input": "required name=search_term_string"
   }

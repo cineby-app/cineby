@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: GenrePageProps): Promise<Meta
     openGraph: {
       title,
       description,
-      url: `https://cineby.vip/genre/${genreId}`,
+      url: `https://play.cineby.vip/genre/${genreId}`,
       siteName: 'Cineby',
       locale: 'en_US',
       type: 'website',
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: GenrePageProps): Promise<Meta
       site: '@cineby',
     },
     alternates: {
-      canonical: `https://cineby.vip/genre/${genreId}`,
+      canonical: `https://play.cineby.vip/genre/${genreId}`,
     },
     robots: {
       index: true,

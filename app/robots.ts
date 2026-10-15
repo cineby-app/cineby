@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://cineby.vip/sitemap.xml',
+    sitemap: 'https://play.cineby.vip/sitemap.xml',
   };
 }
